@@ -1,0 +1,27 @@
+@charset "utf-8";
+
+// Import a Google Font
+@import url('https://fonts.googleapis.com/css?family=Nunito:400,700');
+
+// From Color Palette
+$violet: #4e6ae0;
+$violet-light: rgba(95, 121, 233, 0.23);
+
+// Override Bulma's default colors
+$primary: $violet;
+
+// Modal overrides
+$modal-card-head-background-color: white;
+$modal-card-title-color: $violet;
+$modal-card-head-border-bottom: 0;
+$modal-card-foot-border-top: 0;
+$modal-card-body-padding: 30px;
+$modal-card-head-padding: 30px;
+
+// Own styles
+.form-modal-footer {
+  padding-top: 0 !important;
+  padding-bottom: 10px !important;
+}
+
+@import "node_modules/bulma/bulma";

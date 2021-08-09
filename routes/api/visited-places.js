@@ -1,50 +1,50 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const { check, validationResult } = require('express-validator');
+const { check, validationResult } = require("express-validator");
 
-const VisitedPlace = require('../../models/VisitedPlace');
+const VisitedPlace = require("../../models/VisitedPlace");
 
 // @route   GET api/visited-places
 // @desc    Get all visited places
-router.get('/', async (req, res) => {
+router.get("/", async (req, res) => {
     try {
         const visitedPlaces = await VisitedPlace.find().sort({ date: -1 });
         res.json(visitedPlaces);
     } catch (err) {
         console.error(err.message);
-        res.status(500).send('Server Error');
+        res.status(500).send("Server Error");
     }
 });
 
 // @route   GET api/visited-places/:id
 // @desc    Get visited place by Id
-router.get('/:id', async (req, res) => {
+router.get("/:id", async (req, res) => {
     try {
         const visitedPlace = await VisitedPlace.findById(req.params.id);
 
         if (!visitedPlace) {
-            return res.status(404).json({ msg: 'Record not found.' });
+            return res.status(404).json({ msg: "Record not found." });
         }
 
         res.json(visitedPlace);
     } catch (err) {
-        if (err.kind === 'ObjectId') {
-            return res.status(404).json({ msg: 'Record not found.' });
+        if (err.kind === "ObjectId") {
+            return res.status(404).json({ msg: "Record not found." });
         }
 
         console.error(err.message);
-        res.status(500).send('Server Error');
+        res.status(500).send("Server Error");
     }
 });
 
 // @route   POST api/visited-places
 // @desc    Add new visited place
 router.post(
-    '/',
+    "/",
     [
-        check('place', 'Place is required').not().isEmpty(),
-        check('date', 'Date is required').not().isEmpty(),
-        check('hours', 'Hours is required').not().isEmpty(),
+        check("place", "Place is required").not().isEmpty(),
+        check("date", "Date is required").not().isEmpty(),
+        check("hours", "Hours is required").not().isEmpty(),
     ],
     async (req, res) => {
         const errors = validationResult(req);
@@ -66,42 +66,42 @@ router.post(
         } catch (err) {
             console.error(err.message);
 
-            res.status(500).send('Server error');
+            res.status(500).send("Server error");
         }
     }
 );
 
 // @route   DELETE api/visited-places
 // @desc    Delete by Id
-router.delete('/:id', async (req, res) => {
+router.delete("/:id", async (req, res) => {
     try {
         const visitedPlace = await VisitedPlace.findById(req.params.id);
 
         if (!visitedPlace) {
-            return res.status(404).json({ msg: 'Record not found.' });
+            return res.status(404).json({ msg: "Record not found." });
         }
 
         await visitedPlace.remove();
 
-        res.json({ msg: 'Visited place removed' });
+        res.json({ msg: "Visited place removed" });
     } catch (err) {
-        if (err.kind === 'ObjectId') {
-            return res.status(404).json({ msg: 'Visited place not found.' });
+        if (err.kind === "ObjectId") {
+            return res.status(404).json({ msg: "Visited place not found." });
         }
 
         console.error(err.message);
-        res.status(500).send('Server Error');
+        res.status(500).send("Server Error");
     }
 });
 
 // @route   PUT api/visited-places/:id
 // @desc    Update visited place
 router.put(
-    '/:id',
+    "/:id",
     [
-        check('place', 'Place is required').not().isEmpty(),
-        check('date', 'Date is required').not().isEmpty(),
-        check('hours', 'Hours is required').not().isEmpty(),
+        check("place", "Place is required").not().isEmpty(),
+        check("date", "Date is required").not().isEmpty(),
+        check("hours", "Hours is required").not().isEmpty(),
     ],
     async (req, res) => {
         const errors = validationResult(req);
@@ -115,22 +115,20 @@ router.put(
             const visitedPlace = await VisitedPlace.findById(req.params.id);
 
             if (!visitedPlace) {
-                return res
-                    .status(404)
-                    .json({ msg: 'Visited place not found.' });
+                return res.status(404).json({ msg: "Visited place not found." });
             }
 
             if (place) visitedPlace.place = place;
             if (date) visitedPlace.date = date;
             if (hours) visitedPlace.hours = hours;
-            if (isCrowded) visitedPlace.isCrowded = isCrowded;
+            if (isCrowded !== undefined) visitedPlace.isCrowded = isCrowded;
 
             await visitedPlace.save();
 
             res.json(visitedPlace);
         } catch (err) {
             console.error(err.message);
-            res.status(500).send('Server Error');
+            res.status(500).send("Server Error");
         }
     }
 );
