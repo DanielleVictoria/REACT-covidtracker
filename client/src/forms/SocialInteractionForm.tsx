@@ -1,13 +1,14 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import '../bulma/mystyles.css';
 import {SocialInteraction} from "../models/SocialInteraction";
 import Typeahead from "../presentational-components/Typeahead";
-import {getAllNames} from "../services/SocialInteractionService";
+import {useSelector} from "react-redux";
+import {StoreState} from "../redux/StoreState";
+import {getAllNames} from "../redux/selectors/SocialInteractionsSelectors";
 
 type Props = {
     handleClose: () => void;
     handleSubmit: (socialInteraction: SocialInteraction) => void;
-    updateData: boolean;
 };
 
 const SocialInteractionForm: React.FC<Props> = (props: Props) => {
@@ -16,20 +17,11 @@ const SocialInteractionForm: React.FC<Props> = (props: Props) => {
     const [socialInteractionData, setSocialInteractionData] = useState(new SocialInteraction());
 
     /** Displayed dropdown options for the name */
-    const [nameOptions, setNameOptions] = useState<string[]>([]);
+    const nameOptions = useSelector<StoreState>(
+        (state) => getAllNames(state.socialInteractions)
+    ) as string[];
 
     const [clearTypeahead, setClearTypeahead] = useState<boolean>(false);
-
-    /** Initializations */
-    useEffect(() => {
-        getData();
-    }, [props.updateData])
-
-    const getData = () => {
-        getAllNames().then((response) => {
-            setNameOptions(response);
-        })
-    }
 
     /** Handler for any input fields, except type ahead */
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {

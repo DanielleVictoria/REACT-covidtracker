@@ -1,51 +1,40 @@
-import React, {useEffect, useState} from "react";
-import Header from "../presentational-components/Header";
-import TableDisplay from "../presentational-components/TableDisplay";
-import SimpleModal from "../presentational-components/SimpleModal";
-import useModal from "../hooks/useModal";
-import SocialInteractionForm from "../forms/SocialInteractionForm";
-import PlaceExposureForm from "../forms/PlaceExposureForm";
-import {SocialInteraction} from "../models/SocialInteraction";
-import {addSocialInteraction, getAllNames} from "../services/SocialInteractionService";
-import useSocialInteractionsData from "../hooks/useSocialInteractionsData";
 import {getDayAndMonthNDaysAgo} from "../services/DateHelperService";
+import SocialInteractionForm from "../forms/SocialInteractionForm";
+import {getSocialInteractionsChartData} from "../redux/selectors/SocialInteractionsSelectors";
 import {useDispatch, useSelector} from "react-redux";
-import {getAllSocialInteractions} from "../redux/actions/social-interactions/Actions";
+import useModal from "../hooks/useModal";
+import {SocialInteraction} from "../models/SocialInteraction";
 import {StoreState} from "../redux/StoreState";
+import SimpleModal from "../presentational-components/SimpleModal";
+import Header from "../presentational-components/Header";
+import React, {useEffect} from "react";
+import TableDisplay from "../presentational-components/TableDisplay";
+import {addSocialInteraction, getAllSocialInteractions} from "../redux/actions/social-interactions/Actions";
+import {useHistory} from "react-router";
+
 
 const Dashboard = () => {
 
-    // Modal functionalities
+    // ------------- Variable Initializations
+    const dispatch = useDispatch();
+    const history = useHistory();
+
+    useEffect(() => {
+        getAllSocialInteractions(dispatch)
+    }, [])
+
+    const socialInteractionsChartData = useSelector<StoreState>(
+        (state) => getSocialInteractionsChartData(state.socialInteractions)
+    ) as { x: number, y: number }[];
+
+    // ------------- Modal functionalities
     const socialInteractionModal = useModal();
     const placeExposureModal = useModal();
 
-    // States
-    const [updateData, setUpdateData] = useState<boolean>(false);
-
-    // Submit functions
-    const submitSocialInteraction = (socialInteractionData: SocialInteraction) => {
-        addSocialInteraction(socialInteractionData).then(r => {
-            setUpdateData(!updateData);
-            retrieveSocialInteractionData();
-        });
+    // ------------- Callbacks
+    const submitSocialInteraction = (socialInteraction: SocialInteraction) => {
+        addSocialInteraction(dispatch, socialInteraction);
     }
-
-    // Test
-    // const dispatch = useDispatch();
-    // useEffect(() => {
-    //     getAllSocialInteractions(dispatch)
-    // }, [])
-    //
-    // const names = useSelector<StoreState>(
-    //     (state) => getAllNames(state.socialInteractions)
-    // ) as string[];
-    // console.log('Names : ', names);
-
-    const {
-        socialInteractionsData,
-        getSocialInteractionChartData,
-        retrieveSocialInteractionData
-    } = useSocialInteractionsData();
 
     return (
         <div>
@@ -89,8 +78,8 @@ const Dashboard = () => {
                 <div className="column">
                     <TableDisplay
                         title={"Recent Social Places"}
-                        onViewAll={() => console.log('Recent Social Places OnViewAll')}
-                        chartData={getSocialInteractionChartData(socialInteractionsData)}
+                        onViewAll={() => history.push('/social-interactions')}
+                        chartData={socialInteractionsChartData}
                         chartTickValues={[1, 2, 3, 4, 5, 6, 7]}
                         chartLabelX={getDayAndMonthNDaysAgo(7, new Date())}
                         chartLabelYFunction={(x) => x}
@@ -107,20 +96,19 @@ const Dashboard = () => {
                 <SocialInteractionForm
                     handleClose={socialInteractionModal.hideModal}
                     handleSubmit={submitSocialInteraction}
-                    updateData={updateData}
                 />
             </SimpleModal>
 
-            <SimpleModal
-                title="Add Visited Place"
-                show={placeExposureModal.isShown}
-                handleClose={placeExposureModal.hideModal}>
-                <PlaceExposureForm
-                    handleSubmit={() => {
-                        console.log('Form Submitted');
-                    }}
-                    handleClose={placeExposureModal.hideModal}/>
-            </SimpleModal>
+            {/*<SimpleModal*/}
+            {/*    title="Add Visited Place"*/}
+            {/*    show={placeExposureModal.isShown}*/}
+            {/*    handleClose={placeExposureModal.hideModal}>*/}
+            {/*    <PlaceExposureForm*/}
+            {/*        handleSubmit={() => {*/}
+            {/*            console.log('Form Submitted');*/}
+            {/*        }}*/}
+            {/*        handleClose={placeExposureModal.hideModal}/>*/}
+            {/*</SimpleModal>*/}
 
         </div>
     );

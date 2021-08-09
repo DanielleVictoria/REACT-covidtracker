@@ -18,4 +18,19 @@ export function getAllSocialInteractionsSuccess(socialInteractions: SocialIntera
     };
 }
 
+export function addSocialInteraction(dispatch: Dispatch<any>, payload: SocialInteraction) {
+    service
+        .addSocialInteraction(payload)
+        .then(socialInteraction => dispatch(addSocialInteractionSuccess(socialInteraction)))
+}
+
+export function addSocialInteractionSuccess(socialInteraction: SocialInteraction) {
+    return {
+        type: types.ADD_SOCIAL_INTERACTION_SUCCESS,
+        payload: {
+            socialInteraction
+        },
+    };
+}
+
 

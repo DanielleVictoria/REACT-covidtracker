@@ -11,6 +11,9 @@ const socialInteractionsReducer: Reducer<StoreState, AnyAction> = (
         case types.GET_ALL_SOCIAL_INTERACTIONS_SUCCESS:
             return { ...state, socialInteractions: action["payload"].socialInteractions };
 
+        case types.ADD_SOCIAL_INTERACTION_SUCCESS:
+            return { ...state, socialInteractions: [...state.socialInteractions, action["payload"].socialInteraction] };
+
         default:
             return state;
     }
