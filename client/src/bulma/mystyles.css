@@ -1802,7 +1802,7 @@ div.icon-text {
   .table th {
     border: 1px solid #dbdbdb;
     border-width: 0 0 1px;
-    padding: 0.5em 0.75em;
+    padding: 0.8em 0.75em;
     vertical-align: top; }
     .table td.is-white,
     .table th.is-white {
@@ -1889,7 +1889,7 @@ div.icon-text {
     .table thead td,
     .table thead th {
       border-width: 0 0 2px;
-      color: #363636; }
+      color: #4e6ae0; }
   .table tfoot {
     background-color: transparent; }
     .table tfoot td,
@@ -1910,9 +1910,9 @@ div.icon-text {
   .table.is-fullwidth {
     width: 100%; }
   .table.is-hoverable tbody tr:not(.is-selected):hover {
-    background-color: #fafafa; }
+    background-color: rgba(95, 121, 233, 0.23); }
   .table.is-hoverable.is-striped tbody tr:not(.is-selected):hover {
-    background-color: #fafafa; }
+    background-color: rgba(95, 121, 233, 0.23); }
     .table.is-hoverable.is-striped tbody tr:not(.is-selected):hover:nth-child(even) {
       background-color: whitesmoke; }
   .table.is-narrow td,

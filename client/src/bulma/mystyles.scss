@@ -18,6 +18,11 @@ $modal-card-foot-border-top: 0;
 $modal-card-body-padding: 30px;
 $modal-card-head-padding: 30px;
 
+// Table overrides
+$table-row-hover-background-color: $violet-light;
+$table-head-cell-color: $violet;
+$table-cell-padding: 0.8em 0.75em;
+
 // Own styles
 .form-modal-footer {
   padding-top: 0 !important;

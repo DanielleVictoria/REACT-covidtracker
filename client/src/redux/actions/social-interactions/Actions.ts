@@ -33,4 +33,36 @@ export function addSocialInteractionSuccess(socialInteraction: SocialInteraction
     };
 }
 
+export function updateSocialInteraction(dispatch: Dispatch<any>, _id: string, payload: SocialInteraction) {
+    service
+        .updateSocialInteraction(_id, payload)
+        .then(result => dispatch(updateSocialInteractionSuccess(_id, result)))
+}
+
+export function updateSocialInteractionSuccess(_id: string, socialInteraction: SocialInteraction) {
+    return {
+        type: types.UPDATE_SOCIAL_INTERACTION_SUCCESS,
+        payload: {
+            _id,
+            socialInteraction
+        },
+    };
+}
+
+export function deleteSocialInteraction(dispatch: Dispatch<any>, _id: string) {
+    service
+        .deleteSocialInteraction(_id)
+        .then(() => dispatch(deleteSocialInteractionSuccess(_id)))
+}
+
+export function deleteSocialInteractionSuccess(_id: string) {
+    return {
+        type: types.DELETE_SOCIAL_INTERACTION_SUCCESS,
+        payload: {
+            _id,
+        },
+    };
+}
+
+
 
