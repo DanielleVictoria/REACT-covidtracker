@@ -25,4 +25,29 @@ export const addSocialInteraction = (socialInteraction: SocialInteraction) => {
         .then((response) => response.json());
 }
 
+export const updateSocialInteraction = (id: string, socialInteraction: SocialInteraction): Promise<any> => {
+
+    const requestOptions = {
+        method: 'PUT',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(socialInteraction)
+    }
+
+    return fetch(`${SOCIAL_INTERACTION_URL}/${id}`, requestOptions)
+        .then((response) => response.json())
+        .catch(error => console.error(error));
+}
+
+export const deleteSocialInteraction = (id: string): Promise<any> => {
+
+    const requestOptions = {
+        method: 'DELETE',
+    }
+
+    return fetch(`${SOCIAL_INTERACTION_URL}/${id}`, requestOptions)
+        .then((response) => response.json())
+        .catch(error => console.error(error));
+}
+
+
 

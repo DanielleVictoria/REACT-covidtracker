@@ -1,9 +1,9 @@
-import React, {ReactNode} from 'react';
+import React from 'react';
 import '../bulma/mystyles.css';
 
 type Props = {
     title: string;
-    tabInformation: {
+    tabInformation?: {
         title: string;
         onTabClick: () => void;
     }[];
@@ -11,7 +11,8 @@ type Props = {
 
 const Header: React.FC<Props> = (props: Props) => {
 
-    const {title, tabInformation} = props;
+    let {title, tabInformation} = props;
+    tabInformation = tabInformation ?? [];
 
     return (
         <section className="hero is-primary">

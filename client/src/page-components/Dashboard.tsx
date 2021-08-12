@@ -3,7 +3,6 @@ import SocialInteractionForm from "../forms/SocialInteractionForm";
 import {getSocialInteractionsChartData} from "../redux/selectors/SocialInteractionsSelectors";
 import {useDispatch, useSelector} from "react-redux";
 import useModal from "../hooks/useModal";
-import {SocialInteraction} from "../models/SocialInteraction";
 import {StoreState} from "../redux/StoreState";
 import SimpleModal from "../presentational-components/SimpleModal";
 import Header from "../presentational-components/Header";
@@ -11,7 +10,6 @@ import React, {useEffect} from "react";
 import TableDisplay from "../presentational-components/TableDisplay";
 import {addSocialInteraction, getAllSocialInteractions} from "../redux/actions/social-interactions/Actions";
 import {useHistory} from "react-router";
-
 
 const Dashboard = () => {
 
@@ -30,11 +28,6 @@ const Dashboard = () => {
     // ------------- Modal functionalities
     const socialInteractionModal = useModal();
     const placeExposureModal = useModal();
-
-    // ------------- Callbacks
-    const submitSocialInteraction = (socialInteraction: SocialInteraction) => {
-        addSocialInteraction(dispatch, socialInteraction);
-    }
 
     return (
         <div>
@@ -95,7 +88,7 @@ const Dashboard = () => {
                 handleClose={socialInteractionModal.hideModal}>
                 <SocialInteractionForm
                     handleClose={socialInteractionModal.hideModal}
-                    handleSubmit={submitSocialInteraction}
+                    handleSubmit={(socialInteraction) => addSocialInteraction(dispatch, socialInteraction)}
                 />
             </SimpleModal>
 
