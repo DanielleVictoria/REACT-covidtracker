@@ -11,11 +11,11 @@ import {SocialInteraction} from "../models/SocialInteraction";
 import {Column, Row} from 'react-table';
 import Header from "../presentational-components/Header";
 import Table from "../presentational-components/Table";
-import {filterLast14Days} from "../filters/Last14DaysFilter";
 import SimpleModal from "../presentational-components/SimpleModal";
 import SocialInteractionForm from "../forms/SocialInteractionForm";
 import useModal from "../hooks/useModal";
-import {formatResults} from "../redux/selectors/SocialInteractionsSelectors";
+import {formatResults} from "../filters/SocialInteractionsFilters";
+import {filterLastNDaysFromTableObject} from "../filters/TableObjectFilters";
 
 const SocialInteractionsMasterList = () => {
 
@@ -36,7 +36,7 @@ const SocialInteractionsMasterList = () => {
             accessor: 'date',
             defaultCanFilter: true,
             filter: (rows: Array<Row>, columnIds: Array<string>, daysToGoBack: number) =>
-                filterLast14Days(rows, columnIds, daysToGoBack),
+                filterLastNDaysFromTableObject(rows, columnIds, daysToGoBack),
             sortType: (rowA: Row, rowB: Row, columnId: string): number => {
                 return rowA.values[columnId] > rowB.values[columnId] ? 1 : -1;
             }
@@ -59,7 +59,7 @@ const SocialInteractionsMasterList = () => {
 
             {/*------------- HEADER -------------*/}
             <Header
-                title='🏥 COVID Exposure Tracker Tool'
+                title='COVID Exposure Tracker Tool'
                 tabInformation={[
                     {
                         title: 'Dashboard',

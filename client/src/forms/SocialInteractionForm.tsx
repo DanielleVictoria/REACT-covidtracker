@@ -4,7 +4,7 @@ import {SocialInteraction} from "../models/SocialInteraction";
 import Typeahead from "../presentational-components/Typeahead";
 import {useSelector} from "react-redux";
 import {StoreState} from "../redux/StoreState";
-import {getAllNames} from "../redux/selectors/SocialInteractionsSelectors";
+import {getAllNames} from "../filters/SocialInteractionsFilters";
 
 type Props = {
     handleClose: () => void;
