@@ -1,5 +1,5 @@
-import {SocialInteraction} from "../../models/SocialInteraction";
-import {getDateNDaysAgo, getDateWithoutTimestamp} from "../../services/DateHelperService";
+import {SocialInteraction} from "../models/SocialInteraction";
+import {getAcceptableDates, getDateNDaysAgo, getDateWithoutTimestamp} from "../services/DateHelperService";
 
 /**
  * Gets all names of social interactions with no duplicates
@@ -55,4 +55,12 @@ export const getSocialInteractionsChartData = (
 
     return results;
 
+}
+
+export const filterLastNDays = (daysToGoBack: number, socialInteractions: SocialInteraction[]) : SocialInteraction[] => {
+    const acceptableDates = getAcceptableDates(daysToGoBack);
+    let results =  socialInteractions.filter(interaction => (
+        acceptableDates.includes(getDateWithoutTimestamp(new Date(interaction.date)).toString()))
+    );
+    return results.length !== 0 ? results : [];
 }

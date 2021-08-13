@@ -1,6 +1,6 @@
 import {getDayAndMonthNDaysAgo} from "../services/DateHelperService";
 import SocialInteractionForm from "../forms/SocialInteractionForm";
-import {getSocialInteractionsChartData} from "../redux/selectors/SocialInteractionsSelectors";
+import {getSocialInteractionsChartData} from "../filters/SocialInteractionsFilters";
 import {useDispatch, useSelector} from "react-redux";
 import useModal from "../hooks/useModal";
 import {StoreState} from "../redux/StoreState";
@@ -10,6 +10,7 @@ import React, {useEffect} from "react";
 import TableDisplay from "../presentational-components/TableDisplay";
 import {addSocialInteraction, getAllSocialInteractions} from "../redux/actions/social-interactions/Actions";
 import {useHistory} from "react-router";
+import NotificationsList from "../presentational-components/NotificationsList";
 
 const Dashboard = () => {
 
@@ -34,7 +35,7 @@ const Dashboard = () => {
 
             {/*------------- HEADER -------------*/}
             <Header
-                title='🏥 COVID Exposure Tracker Tool'
+                title='COVID Exposure Tracker Tool'
                 tabInformation={[
                     {
                         title: 'Add Social Interaction',
@@ -50,6 +51,9 @@ const Dashboard = () => {
                     },
                 ]}
             />
+
+            {/*------------- NOTIFICATIONS -------------*/}
+            <NotificationsList/>
 
             {/*------------- TABLES -------------*/}
             <div className="columns is-gapless">
@@ -75,7 +79,6 @@ const Dashboard = () => {
                         chartData={socialInteractionsChartData}
                         chartTickValues={[1, 2, 3, 4, 5, 6, 7]}
                         chartLabelX={getDayAndMonthNDaysAgo(7, new Date())}
-                        chartLabelYFunction={(x) => x}
                         chartLabelY={'Number of Social Interactions'}
                     />
                 </div>

@@ -19,3 +19,12 @@ export const getDayAndMonthNDaysAgo = (lastDays: number, date: Date) => {
 export const getDateWithoutTimestamp = (date: Date) => {
     return new Date(date.getFullYear(), date.getMonth(), date.getDate());
 }
+
+export const getAcceptableDates = (daysToGoBack: number): string[] => {
+    const acceptableDates: string[]= [];
+    for (let i = daysToGoBack - 1; i >= 0; i--) {
+        const resultDate = getDateNDaysAgo(i, new Date());
+        acceptableDates.push(getDateWithoutTimestamp(resultDate).toString());
+    }
+    return acceptableDates;
+}

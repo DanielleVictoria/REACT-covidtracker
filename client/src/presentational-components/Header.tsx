@@ -1,5 +1,6 @@
 import React from 'react';
 import '../bulma/mystyles.css';
+import {PulseOutline} from "react-ionicons";
 
 type Props = {
     title: string;
@@ -20,7 +21,21 @@ const Header: React.FC<Props> = (props: Props) => {
             {/*------------- HERO BODY -------------*/}
             <div className="hero-body">
                 <p className="title">
-                    {title}
+                    <span className="level">
+                        <span className="level-right">
+                            <span className="level-item">
+                            <PulseOutline
+                                color={'#ffffff'}
+                                title={''}
+                                height="100px"
+                                width="100px"
+                            />
+                            </span>
+                            <span className="level-item">
+                                {title}
+                            </span>
+                        </span>
+                    </span>
                 </p>
             </div>
 
