@@ -9,15 +9,26 @@ import {TypeMap} from "../models/TypeMap";
 import {TableAction} from "../models/TableAction";
 
 type Props = {
+
+    /** The columns that will be memoized and rendered into the table */
     columnsConf: Array<Column>,
+
+    /** The data that will be memoized and rendered into the table */
     dataConf: Array<any>,
 
     /** A lookup for the input type when we make each cell editable */
     typeMap: TypeMap
 
     // Callbacks
-    onUpdate: (value: any, tableInstance: TableInstance) => void;
+    onUpdate: (value: any, rowIndex: number, tableInstance?: TableInstance) => void;
     onDelete: (value: any) => void;
+
+    /** This will override the action type of a row */
+    overrideRowActionType?: { rowIndex: number, actionType: TableAction }
+
+    /** This is a handling for when the Update and Delete validation fails. This will revert the new values into the
+     * value assigned before we clicked the Update/Delete */
+    hasError: boolean;
 };
 
 const Table: React.FC<Props> = (props: Props) => {
@@ -30,8 +41,24 @@ const Table: React.FC<Props> = (props: Props) => {
     // This will be used for the cells or table controls to know what was last clicked
     const [tableAction, setTableAction] = useState<TableAction>(TableAction.NONE);
 
-    // Data being manipulated
+    // Data being manipulated. The value of this will change realtime as the user inputs anything.
     const [manipulatedData, setManipulatedData] = useState<any>({});
+
+    // Previous data that is saved upon clicking edit. This will be used if we want to revert the changes when the validation fails
+    const [originalData, setOriginalData] = useState<any>({});
+
+    useEffect(() => {
+        if (props.overrideRowActionType) {
+            setCurrentEditingRowIndex(props.overrideRowActionType.rowIndex);
+            setTableAction(props.overrideRowActionType.actionType);
+        }
+    }, [props.overrideRowActionType]);
+
+    useEffect(() => {
+        if (props.hasError) {
+            setManipulatedData(originalData);
+        }
+    }, [props.hasError]);
 
     // ------------- Table
 
@@ -46,12 +73,13 @@ const Table: React.FC<Props> = (props: Props) => {
                             setManipulatedData({});
                             setTableAction(TableAction.CANCEL);
                         }}
-                        onUpdate={manipulatedData => {
-                            props.onUpdate(manipulatedData, tableInstance);
+                        onUpdate={(manipulatedData, rowNumber) => {
                             setTableAction(TableAction.UPDATE);
+                            props.onUpdate(manipulatedData, rowNumber, tableInstance);
                         }}
                         onEdit={(rowNumber) => {
                             setManipulatedData(tableInstance.rows[rowNumber].original)
+                            setOriginalData(tableInstance.rows[rowNumber].original);
                             setCurrentEditingRowIndex(rowNumber);
                             setTableAction(TableAction.EDIT);
                         }}
@@ -76,6 +104,7 @@ const Table: React.FC<Props> = (props: Props) => {
 
         // Table Properties
         getTableProps, getTableBodyProps, headerGroups, prepareRow,
+
         // Page Navigation
         page, canPreviousPage, canNextPage, pageCount, gotoPage, nextPage, previousPage, setPageSize,
 
@@ -99,7 +128,7 @@ const Table: React.FC<Props> = (props: Props) => {
             // Defaults
             defaultColumn,
 
-            // Defined properties
+            // Defined properties : Set the variables here so that the EditableCells can access it
             currentEditingRowIndex, setCurrentEditingRowIndex, typeMap, tableAction,
             setTableAction, manipulatedData, setManipulatedData
         },

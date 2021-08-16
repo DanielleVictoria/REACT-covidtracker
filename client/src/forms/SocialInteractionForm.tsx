@@ -5,6 +5,8 @@ import Typeahead from "../presentational-components/Typeahead";
 import {useSelector} from "react-redux";
 import {StoreState} from "../redux/StoreState";
 import {getAllNames} from "../filters/SocialInteractionsFilters";
+import {validateSocialInteraction} from "../validators/SocialInteractionFormValidator";
+import {ValidatorReturnObject} from "../models/ValidatorReturnObject";
 
 type Props = {
     handleClose: () => void;
@@ -14,14 +16,20 @@ type Props = {
 const SocialInteractionForm: React.FC<Props> = (props: Props) => {
 
     /** Form values */
-    const [socialInteractionData, setSocialInteractionData] = useState(new SocialInteraction());
+    const [socialInteractionData, setSocialInteractionData] = useState<any>({
+        name : '',
+        date: '',
+        hours: 0,
+        isSocialDistancing : false,
+    });
+
+    const [clearTypeahead, setClearTypeahead] = useState<boolean>(false);
+    const [validationObject, setValidationObject] = useState<ValidatorReturnObject>();
 
     /** Displayed dropdown options for the name */
     const nameOptions = useSelector<StoreState>(
         (state) => getAllNames(state.socialInteractions)
     ) as string[];
-
-    const [clearTypeahead, setClearTypeahead] = useState<boolean>(false);
 
     /** Handler for any input fields, except type ahead */
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -37,7 +45,14 @@ const SocialInteractionForm: React.FC<Props> = (props: Props) => {
     }
 
     const handleSubmit = () => {
-        props.handleSubmit(socialInteractionData);
+        const validationObject = validateSocialInteraction(socialInteractionData);
+        if (!validationObject.isValid) {
+            setValidationObject(validationObject);
+            return;
+        } else {
+            setValidationObject(undefined);
+        }
+        props.handleSubmit({...socialInteractionData, date: new Date(socialInteractionData.date)});
         resetForm();
         props.handleClose(); // Close the modal
     }
@@ -48,8 +63,21 @@ const SocialInteractionForm: React.FC<Props> = (props: Props) => {
     }
 
     const resetForm = () => {
+        setValidationObject(undefined);
         setClearTypeahead(!clearTypeahead);
-        setSocialInteractionData(new SocialInteraction()); // Reset the form
+        setSocialInteractionData({
+            name : '',
+            date: '',
+            hours: 0,
+            isSocialDistancing : false,
+        }); // Reset the form
+    }
+
+    const showValidationMessage = (name: string) => {
+        if (!validationObject?.isValid) {
+            const message = validationObject?.messages.find(message => message.property === name);
+            return <p className="help is-danger">{message?.message}</p>
+        }
     }
 
     return (
@@ -69,6 +97,8 @@ const SocialInteractionForm: React.FC<Props> = (props: Props) => {
                         visibilityIndex={1}
                     />
                 </div>
+                {showValidationMessage('name')}
+
             </div>
 
             <div className="columns">
@@ -81,10 +111,11 @@ const SocialInteractionForm: React.FC<Props> = (props: Props) => {
                             <input
                                 name="date"
                                 onChange={handleInputChange}
-                                value={socialInteractionData.date.toString()}
+                                value={socialInteractionData.date}
                                 className="input"
                                 type="date"/>
                         </div>
+                        {showValidationMessage('date')}
                     </div>
                 </div>
 
@@ -100,6 +131,7 @@ const SocialInteractionForm: React.FC<Props> = (props: Props) => {
                                 className="input"
                                 type="number"/>
                         </div>
+                        {showValidationMessage('hours')}
                     </div>
                 </div>
 

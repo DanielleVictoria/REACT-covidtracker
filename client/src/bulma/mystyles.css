@@ -3499,7 +3499,7 @@ button.dropdown-item {
   display: flex;
   flex-shrink: 0;
   justify-content: flex-start;
-  padding: 30px;
+  padding: 20px;
   position: relative; }
 
 .modal-card-head {
@@ -3527,7 +3527,7 @@ button.dropdown-item {
   flex-grow: 1;
   flex-shrink: 1;
   overflow: auto;
-  padding: 30px; }
+  padding: 20px; }
 
 .navbar {
   background-color: white;

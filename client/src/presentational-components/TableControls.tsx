@@ -4,7 +4,7 @@ import {TableAction} from "../models/TableAction";
 
 type Props = {
     tableInstance: TableInstance,
-    onUpdate: (rowNumber: number) => void
+    onUpdate: (data: any, rowNumber: number) => void
     onDelete: (rowNumber: number) => void
     onEdit: (rowNumber: number) => void
     onCancel: () => void
@@ -22,7 +22,7 @@ const TableControls: React.FC<Props> = (props: Props) => {
     if ([TableAction.EDIT, TableAction.CANCEL].includes(tableAction) && index === currentEditingRowIndex) {
         return (
             <div className="buttons">
-                <button onClick={() => props.onUpdate(manipulatedData)} className="button is-primary is-small">Update
+                <button onClick={() => props.onUpdate(manipulatedData, index)} className="button is-primary is-small">Update
                 </button>
                 <button onClick={() => props.onCancel()} className="button is-small">Cancel
                 </button>
