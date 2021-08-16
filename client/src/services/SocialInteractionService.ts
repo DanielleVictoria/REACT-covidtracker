@@ -12,6 +12,7 @@ export const getAllSocialInteractions = (): Promise<SocialInteraction[]> => {
     return fetch(SOCIAL_INTERACTION_URL, requestOptions)
         .then((response) => response.json())
         .catch(error => console.error(error));
+
 }
 
 export const addSocialInteraction = (socialInteraction: SocialInteraction) => {
@@ -24,6 +25,7 @@ export const addSocialInteraction = (socialInteraction: SocialInteraction) => {
 
     return fetch(SOCIAL_INTERACTION_URL, requestOptions)
         .then((response) => response.json());
+
 }
 
 export const updateSocialInteraction = (id: string, socialInteraction: SocialInteraction): Promise<any> => {
@@ -37,6 +39,7 @@ export const updateSocialInteraction = (id: string, socialInteraction: SocialInt
     return fetch(`${SOCIAL_INTERACTION_URL}/${id}`, requestOptions)
         .then((response) => response.json())
         .catch(error => console.error(error));
+
 }
 
 export const deleteSocialInteraction = (id: string): Promise<any> => {
@@ -48,6 +51,7 @@ export const deleteSocialInteraction = (id: string): Promise<any> => {
     return fetch(`${SOCIAL_INTERACTION_URL}/${id}`, requestOptions)
         .then((response) => response.json())
         .catch(error => console.error(error));
+
 }
 
 

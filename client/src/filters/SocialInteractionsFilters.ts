@@ -10,7 +10,7 @@ export const getAllNames = (socialInteractions: SocialInteraction[]): string[] =
     return Array.from(new Set(names));
 }
 
-export const formatResults = (socialInteractions: SocialInteraction[]): SocialInteraction[] => {
+export const formatResultsSocialInteractions = (socialInteractions: SocialInteraction[]): SocialInteraction[] => {
     return socialInteractions.map((socialInteraction) => ({
         ...socialInteraction,
         date: new Date(socialInteraction.date)
@@ -21,23 +21,22 @@ export const formatResults = (socialInteractions: SocialInteraction[]): SocialIn
 /**
  * Maps an array of social interaction into {x,y} objects that matches Victory chart library
  * @param socialInteractions
- * @param lastDays
- * @param dateToday
  */
 export const getSocialInteractionsChartData = (
     socialInteractions: SocialInteraction[],
-    lastDays = 6,
-    dateToday = new Date()
 ): { x: number, y: number }[] => {
 
-    const last7DaysDate = getDateNDaysAgo(lastDays, dateToday);
+    const daysInterval = 6;
+    const dateToday = new Date();
+    const initialDate = getDateNDaysAgo(daysInterval, dateToday);
+
     let dateMap: { [date: string]: number } = {};
     let results: { x: number, y: number }[] = [];
     let counter = 0;
 
     let filteredSocialInteractions = socialInteractions.filter((socialInteraction) => {
         const currentValueDate = socialInteraction.date;
-        return last7DaysDate < currentValueDate && currentValueDate <= dateToday
+        return initialDate < currentValueDate && currentValueDate <= dateToday
     });
 
     filteredSocialInteractions.forEach(value => {
@@ -45,7 +44,7 @@ export const getSocialInteractionsChartData = (
         dateMap[dateString] ? ++dateMap[dateString] : dateMap[dateString] = 1;
     });
 
-    for (let i = lastDays; i >= 0; i--) {
+    for (let i = daysInterval; i >= 0; i--) {
         const date = getDateNDaysAgo(i, dateToday);
         results.push({
             x: ++counter,

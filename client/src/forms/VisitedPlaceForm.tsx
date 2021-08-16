@@ -1,12 +1,12 @@
-import React from "react";
+import React, {useEffect} from "react";
 import '../bulma/mystyles.css';
 import {useSelector} from "react-redux";
 import {StoreState} from "../redux/StoreState";
-import {getAllNames} from "../filters/SocialInteractionsFilters";
 import {generalFormValidator} from "../validators/GeneralFormValidator";
 import Typeahead from "../presentational-components/Typeahead";
 import {VisitedPlace} from "../models/VisitedPlace";
 import useForm from "../hooks/useForm";
+import {getAllPlaces} from "../filters/VisitedPlacesFilters";
 
 type Props = {
     handleClose: () => void;
@@ -32,7 +32,7 @@ const VisitedPlaceForm: React.FC<Props> = (props: Props) => {
 
     /** Displayed dropdown options for the name */
     const placeOptions = useSelector<StoreState>(
-        (state) => getAllNames(state.socialInteractions)
+        (state) => getAllPlaces(state.visitedPlaces)
     ) as string[];
 
     const handleSubmit = () => {

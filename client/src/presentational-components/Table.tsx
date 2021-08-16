@@ -31,6 +31,7 @@ type Props = {
     hasError: boolean;
 };
 
+// TODO: Upon updating or deleting while sorting, it will not delete the proper data
 const Table: React.FC<Props> = (props: Props) => {
 
     const {columnsConf, dataConf, typeMap} = props;

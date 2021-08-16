@@ -7,6 +7,7 @@ import {BrowserRouter} from "react-router-dom";
 import SocialInteractionsMasterList from "./page-components/SocialInteractionsMasterList";
 import { Provider as ReduxProvider } from "react-redux";
 import configureState from "./redux/configureStore";
+import VisitedPlacesMasterList from "./page-components/VisitedPlacesMasterList";
 
 function App() {
 
@@ -18,6 +19,7 @@ function App() {
                         <Route exact path="/" component={Dashboard}/>
                         <Route path="/dashboard" component={Dashboard}/>
                         <Route path="/social-interactions" component={SocialInteractionsMasterList}/>
+                        <Route path="/visited-places" component={VisitedPlacesMasterList}/>
                     </Switch>
                 </BrowserRouter>
             </ReduxProvider>

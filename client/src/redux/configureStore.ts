@@ -1,6 +1,6 @@
 import { createStore } from "redux";
-import socialInteractionsReducer from "./reducers/SocialInteractionsReducer";
+import reducer from "./reducers/Reducer";
 
 export default function configureState() {
-    return createStore(socialInteractionsReducer);
+    return createStore(reducer);
 }

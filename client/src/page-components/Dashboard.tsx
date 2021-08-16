@@ -12,6 +12,8 @@ import {addSocialInteraction, getAllSocialInteractions} from "../redux/actions/s
 import {useHistory} from "react-router";
 import NotificationsList from "../presentational-components/NotificationsList";
 import VisitedPlaceForm from "../forms/VisitedPlaceForm";
+import {addVisitedPlace, getAllVisitedPlaces} from "../redux/actions/visited-places/Actions";
+import {getVisitedPlacesChartData} from "../filters/VisitedPlacesFilters";
 
 const Dashboard = () => {
 
@@ -20,12 +22,18 @@ const Dashboard = () => {
     const history = useHistory();
 
     useEffect(() => {
-        getAllSocialInteractions(dispatch)
+        getAllSocialInteractions(dispatch);
+        getAllVisitedPlaces(dispatch);
     }, [])
 
     const socialInteractionsChartData = useSelector<StoreState>(
         (state) => getSocialInteractionsChartData(state.socialInteractions)
     ) as { x: number, y: number }[];
+
+    const visitedPlacesChartData = useSelector<StoreState>(
+        (state) => getVisitedPlacesChartData(state.visitedPlaces)
+    ) as { x: number, y: number }[];
+
 
     // ------------- Modal functionalities
     const socialInteractionModal = useModal();
@@ -59,19 +67,14 @@ const Dashboard = () => {
             {/*------------- TABLES -------------*/}
             <div className="columns is-gapless">
                 <div className="column">
-                    {/*<TableDisplay*/}
-                    {/*    title={"Recent Visited Places"}*/}
-                    {/*    onViewAll={sampleTabClick}*/}
-                    {/*    chartData={[*/}
-                    {/*        {x: 1, y: 5},*/}
-                    {/*        {x: 2, y: 15},*/}
-                    {/*        {x: 3, y: 25},*/}
-                    {/*        {x: 4, y: 35},*/}
-                    {/*    ]}*/}
-                    {/*    chartTickValues={[1,2,3,4]}*/}
-                    {/*    chartLabelX={["Jan 1", "Jan 2", "Jan 3", "Jan 4"]}*/}
-                    {/*    chartLabelYFunction={(x) => (`$${x / 100}k`)}*/}
-                    {/*/>*/}
+                    <TableDisplay
+                        title={"Recent Visited Places"}
+                        onViewAll={() => history.push('/visited-places')}
+                        chartData={visitedPlacesChartData}
+                        chartTickValues={[1, 2, 3, 4, 5, 6, 7]}
+                        chartLabelX={getDayAndMonthNDaysAgo(7, new Date())}
+                        chartLabelY={'Number of Visited Places'}
+                    />
                 </div>
                 <div className="column">
                     <TableDisplay
@@ -101,8 +104,9 @@ const Dashboard = () => {
                 show={placeExposureModal.isShown}
                 handleClose={placeExposureModal.hideModal}>
                 <VisitedPlaceForm
-                    handleSubmit={socialInteraction => console.log('Form Submitted')}
-                    handleClose={placeExposureModal.hideModal}/>
+                    handleClose={placeExposureModal.hideModal}
+                    handleSubmit={visitedPlace => addVisitedPlace(dispatch, visitedPlace)}
+                />
             </SimpleModal>
 
         </div>

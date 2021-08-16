@@ -1,3 +1,4 @@
+// TODO : Should I implement this as an interface instead?
 export class SocialInteraction {
 
     _id: string;

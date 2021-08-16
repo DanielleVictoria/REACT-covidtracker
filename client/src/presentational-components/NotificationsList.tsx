@@ -5,6 +5,7 @@ import {NotificationType} from "../models/NotificationType";
 import {filterLastNDays} from "../filters/SocialInteractionsFilters";
 import {useSelector} from "react-redux";
 import {StoreState} from "../redux/StoreState";
+import {filterLastNDaysVisitedPlaces} from "../filters/VisitedPlacesFilters";
 
 type Props = {};
 
@@ -14,6 +15,14 @@ const NotificationsList: React.FC<Props> = (props: Props) => {
         (state) => (
             filterLastNDays(14, state.socialInteractions)
                 .filter(interaction => !interaction.isSocialDistancing)
+                .length !== 0
+        )
+    ) as boolean;
+
+    const exposedToCrowdedPlaces = useSelector<StoreState>(
+        (state) => (
+            filterLastNDaysVisitedPlaces(14, state.visitedPlaces)
+                .filter(place => place.isCrowded)
                 .length !== 0
         )
     ) as boolean;
@@ -30,7 +39,7 @@ const NotificationsList: React.FC<Props> = (props: Props) => {
                             />
                         </div>
                         <div className="level-item">
-                                <span className='mx-2'>Welcome Back</span>
+                            <span className='mx-2'>Welcome Back</span>
                         </div>
                     </div>
                 </div>
@@ -40,7 +49,22 @@ const NotificationsList: React.FC<Props> = (props: Props) => {
             <div className="columns">
 
                 <div className="column">
-                    <Notification type={NotificationType.SUCCESS} message={'Success'}/>
+
+                    {/*Visited Places Notification*/}
+                    {(() => {
+                        if (exposedToCrowdedPlaces) {
+                            return (
+                                <Notification
+                                    type={NotificationType.DANGER}
+                                    message={'You have been exposed to a crowded place for the last 14 days. ' +
+                                    'Try to avoid crowded places to minimize your exposure risk.'}/>)
+                        } else {
+                            return (
+                                <Notification
+                                    type={NotificationType.SUCCESS}
+                                    message={'Thank you for helping to stop spread the virus by staying home.'}/>)
+                        }
+                    })()}
                 </div>
 
                 {/*Social Interaction Notification*/}
