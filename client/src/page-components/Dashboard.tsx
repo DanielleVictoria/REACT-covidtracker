@@ -11,6 +11,7 @@ import TableDisplay from "../presentational-components/TableDisplay";
 import {addSocialInteraction, getAllSocialInteractions} from "../redux/actions/social-interactions/Actions";
 import {useHistory} from "react-router";
 import NotificationsList from "../presentational-components/NotificationsList";
+import VisitedPlaceForm from "../forms/VisitedPlaceForm";
 
 const Dashboard = () => {
 
@@ -91,20 +92,18 @@ const Dashboard = () => {
                 handleClose={socialInteractionModal.hideModal}>
                 <SocialInteractionForm
                     handleClose={socialInteractionModal.hideModal}
-                    handleSubmit={(socialInteraction) => addSocialInteraction(dispatch, socialInteraction)}
+                    handleSubmit={socialInteraction => addSocialInteraction(dispatch, socialInteraction)}
                 />
             </SimpleModal>
 
-            {/*<SimpleModal*/}
-            {/*    title="Add Visited Place"*/}
-            {/*    show={placeExposureModal.isShown}*/}
-            {/*    handleClose={placeExposureModal.hideModal}>*/}
-            {/*    <PlaceExposureForm*/}
-            {/*        handleSubmit={() => {*/}
-            {/*            console.log('Form Submitted');*/}
-            {/*        }}*/}
-            {/*        handleClose={placeExposureModal.hideModal}/>*/}
-            {/*</SimpleModal>*/}
+            <SimpleModal
+                title="Add Visited Place"
+                show={placeExposureModal.isShown}
+                handleClose={placeExposureModal.hideModal}>
+                <VisitedPlaceForm
+                    handleSubmit={socialInteraction => console.log('Form Submitted')}
+                    handleClose={placeExposureModal.hideModal}/>
+            </SimpleModal>
 
         </div>
     );

@@ -2,7 +2,7 @@ import {ValidatorReturnObject} from "../models/ValidatorReturnObject";
 import {ValidatorMessage} from "../models/ValidatorMessage";
 import {getDateWithoutTimestamp} from "../services/DateHelperService";
 
-export const validateSocialInteraction = (interaction: any): ValidatorReturnObject => {
+export const generalFormValidator = (interaction: any): ValidatorReturnObject => {
 
     let isValid = true;
     let messages: ValidatorMessage[] = [];

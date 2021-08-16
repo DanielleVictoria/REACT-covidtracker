@@ -1,19 +1,19 @@
 import React from "react";
 import '../bulma/mystyles.css';
-import {SocialInteraction} from "../models/SocialInteraction";
-import Typeahead from "../presentational-components/Typeahead";
 import {useSelector} from "react-redux";
 import {StoreState} from "../redux/StoreState";
 import {getAllNames} from "../filters/SocialInteractionsFilters";
 import {generalFormValidator} from "../validators/GeneralFormValidator";
+import Typeahead from "../presentational-components/Typeahead";
+import {VisitedPlace} from "../models/VisitedPlace";
 import useForm from "../hooks/useForm";
 
 type Props = {
     handleClose: () => void;
-    handleSubmit: (socialInteraction: SocialInteraction) => void;
+    handleSubmit: (socialInteraction: VisitedPlace) => void;
 };
 
-const SocialInteractionForm: React.FC<Props> = (props: Props) => {
+const VisitedPlaceForm: React.FC<Props> = (props: Props) => {
 
     const {
         clearTypeahead,
@@ -24,14 +24,14 @@ const SocialInteractionForm: React.FC<Props> = (props: Props) => {
         resetForm,
         isFormValid,
     } = useForm({
-        name : '',
+        place: '',
         date: '',
         hours: 0,
-        isSocialDistancing : false,
+        isCrowded: false,
     });
 
     /** Displayed dropdown options for the name */
-    const nameOptions = useSelector<StoreState>(
+    const placeOptions = useSelector<StoreState>(
         (state) => getAllNames(state.socialInteractions)
     ) as string[];
 
@@ -51,20 +51,20 @@ const SocialInteractionForm: React.FC<Props> = (props: Props) => {
 
         <form>
 
-            {/*------------- NAME -------------*/}
+            {/*------------- PLACE -------------*/}
             <div className="field">
-                <label className="label">Name</label>
+                <label className="label">Place</label>
                 <div className="control is-expanded">
                     <Typeahead
-                        clear = {clearTypeahead}
-                        options={nameOptions}
+                        clear={clearTypeahead}
+                        options={placeOptions}
                         onValueChange={(str) => {
-                            setFormData({...formData, name: str})
+                            setFormData({...formData, place: str})
                         }}
                         visibilityIndex={1}
                     />
                 </div>
-                {showValidationMessage('name')}
+                {showValidationMessage('place')}
 
             </div>
 
@@ -104,14 +104,14 @@ const SocialInteractionForm: React.FC<Props> = (props: Props) => {
 
             </div>
 
-            {/*------------- SOCIAL DISTANCING -------------*/}
+            {/*------------- CROWDED -------------*/}
             <div className="field">
                 <label className="checkbox">
                     <input
-                        name="isSocialDistancing"
+                        name="isCrowded"
                         onChange={handleInputChange}
-                        checked={formData.isSocialDistancing}
-                        type="checkbox"/> Is Social Distancing Observed?
+                        checked={formData.isCrowded}
+                        type="checkbox"/> Is Crowded?
                 </label>
             </div>
 
@@ -130,4 +130,4 @@ const SocialInteractionForm: React.FC<Props> = (props: Props) => {
 
 }
 
-export default SocialInteractionForm;
+export default VisitedPlaceForm;

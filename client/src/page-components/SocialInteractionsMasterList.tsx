@@ -15,7 +15,7 @@ import SimpleModal from "../presentational-components/SimpleModal";
 import SocialInteractionForm from "../forms/SocialInteractionForm";
 import useModal from "../hooks/useModal";
 import {filterLastNDaysFromTableObject} from "../filters/TableObjectFilters";
-import {validateSocialInteraction} from "../validators/SocialInteractionFormValidator";
+import {generalFormValidator} from "../validators/GeneralFormValidator";
 import {ValidatorReturnObject} from "../models/ValidatorReturnObject";
 import {TableAction} from "../models/TableAction";
 import ErrorTable from "../presentational-components/ErrorTable";
@@ -95,7 +95,7 @@ const SocialInteractionsMasterList = () => {
                         ) as SocialInteraction[]
                     }
                     onUpdate={(data, rowIndex, tableInstance) => {
-                        const validationObject = validateSocialInteraction(data);
+                        const validationObject = generalFormValidator(data);
                         if (!validationObject.isValid) {
                             setValidationObject(validationObject);
                             validationErrorsModal.showModal();
