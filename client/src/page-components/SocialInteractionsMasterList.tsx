@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {useHistory} from "react-router";
 import {
@@ -8,14 +8,17 @@ import {
 } from "../redux/actions/social-interactions/Actions";
 import {StoreState} from "../redux/StoreState";
 import {SocialInteraction} from "../models/SocialInteraction";
-import {Column, Row} from 'react-table';
+import {Row} from 'react-table';
 import Header from "../presentational-components/Header";
 import Table from "../presentational-components/Table";
 import SimpleModal from "../presentational-components/SimpleModal";
 import SocialInteractionForm from "../forms/SocialInteractionForm";
 import useModal from "../hooks/useModal";
-import {formatResults} from "../filters/SocialInteractionsFilters";
 import {filterLastNDaysFromTableObject} from "../filters/TableObjectFilters";
+import {validateSocialInteraction} from "../validators/SocialInteractionFormValidator";
+import {ValidatorReturnObject} from "../models/ValidatorReturnObject";
+import {TableAction} from "../models/TableAction";
+import ErrorTable from "../presentational-components/ErrorTable";
 
 const SocialInteractionsMasterList = () => {
 
@@ -23,36 +26,17 @@ const SocialInteractionsMasterList = () => {
     const dispatch = useDispatch();
     const history = useHistory();
 
+    // ------------- States
+    const [validatorObject, setValidationObject] = useState<ValidatorReturnObject>(); // Contains validation messages if validation fails
+    const [tableOverride, setTableOverride] = useState<{ rowIndex: number, actionType: TableAction }>();
+
     useEffect(() => {
         getAllSocialInteractions(dispatch)
     }, []);
 
-    // ------------- Configurations for table
-
-    const columns: Array<Column> = [
-        {Header: 'Person', accessor: 'name'},
-        {
-            Header: 'Date',
-            accessor: 'date',
-            defaultCanFilter: true,
-            filter: (rows: Array<Row>, columnIds: Array<string>, daysToGoBack: number) =>
-                filterLastNDaysFromTableObject(rows, columnIds, daysToGoBack),
-            sortType: (rowA: Row, rowB: Row, columnId: string): number => {
-                return rowA.values[columnId] > rowB.values[columnId] ? 1 : -1;
-            }
-        },
-        {Header: 'Hours', accessor: 'hours'},
-        {
-            Header: 'Is Practicing SD?',
-            accessor: 'isSocialDistancing',
-            sortType: (rowA: Row, rowB: Row, columnId: string): number => {
-                return rowA.values[columnId] === true ? 1 : -1;
-            }
-        },
-    ]
-
     // ------------- Modal functionalities
     const socialInteractionModal = useModal();
+    const validationErrorsModal = useModal();
 
     return (
         <div>
@@ -80,13 +64,46 @@ const SocialInteractionsMasterList = () => {
                     </div>
                 </div>
                 <Table
-                    columnsConf={columns}
+                    columnsConf={
+                        [
+                            {Header: 'Person', accessor: 'name'},
+                            {
+                                Header: 'Date',
+                                accessor: 'date',
+                                defaultCanFilter: true,
+                                filter: (rows: Array<Row>, columnIds: Array<string>, daysToGoBack: number) =>
+                                    filterLastNDaysFromTableObject(rows, columnIds, daysToGoBack),
+                                sortType: (rowA: Row, rowB: Row, columnId: string): number => {
+                                    return rowA.values[columnId] > rowB.values[columnId] ? 1 : -1;
+                                }
+                            },
+                            {Header: 'Hours', accessor: 'hours'},
+                            {
+                                Header: 'Is Practicing SD?',
+                                accessor: 'isSocialDistancing',
+                                sortType: (rowA: Row, rowB: Row, columnId: string): number => {
+                                    return rowA.values[columnId] === true ? 1 : -1;
+                                }
+                            },
+                        ]
+                    }
                     dataConf={
                         useSelector<StoreState>(
-                            (state) => formatResults(state.socialInteractions)
+                            (state) => state.socialInteractions.map(interaction => (
+                                {...interaction, date: interaction.date.toLocaleDateString('en-CA')}
+                            ))
                         ) as SocialInteraction[]
                     }
-                    onUpdate={(data) => {
+                    onUpdate={(data, rowIndex, tableInstance) => {
+                        const validationObject = validateSocialInteraction(data);
+                        if (!validationObject.isValid) {
+                            setValidationObject(validationObject);
+                            validationErrorsModal.showModal();
+                            setTableOverride({rowIndex, actionType: TableAction.EDIT});
+                            return;
+                        } else {
+                            setValidationObject(undefined);
+                        }
                         updateSocialInteraction(dispatch, data._id, data as SocialInteraction);
                     }}
                     onDelete={(data) => {
@@ -97,8 +114,9 @@ const SocialInteractionsMasterList = () => {
                         date: {type: 'date'},
                         hours: {type: 'number'},
                         isSocialDistancing: {type: 'checkbox'}
-                    }
-                    }
+                    }}
+                    overrideRowActionType={tableOverride}
+                    hasError={validatorObject === undefined}
                 />
             </div>
 
@@ -110,6 +128,23 @@ const SocialInteractionsMasterList = () => {
                 <SocialInteractionForm
                     handleClose={socialInteractionModal.hideModal}
                     handleSubmit={(socialInteraction) => addSocialInteraction(dispatch, socialInteraction)}/>
+            </SimpleModal>
+
+            <SimpleModal
+                title="Modification unsuccessful"
+                show={validationErrorsModal.isShown}
+                handleClose={() => {
+                    setValidationObject(undefined);
+                    validationErrorsModal.hideModal();
+                }}>
+                <p className="has-text-danger">
+                    Date modification unsuccessful! Your changes are reverted. Please see the following errors :
+                </p>
+                {(() => {
+                    if (validatorObject) {
+                        return <ErrorTable validatorObject={validatorObject}/>;
+                    }
+                })()}
             </SimpleModal>
 
         </div>

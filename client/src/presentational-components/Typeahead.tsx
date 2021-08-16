@@ -14,6 +14,8 @@ type Props = {
 
 }
 
+// TODO : FIX THE SIZING
+// TODO [ERROR] : When we fill out the Typeahead and if we backspace completely, it doesn't remove the button
 const Typeahead: React.FC<Props> = (props: Props) => {
 
     const [textValue, setTextValue] = useState(""); // Value on the text box itself

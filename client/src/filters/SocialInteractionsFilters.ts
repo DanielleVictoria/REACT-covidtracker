@@ -36,12 +36,12 @@ export const getSocialInteractionsChartData = (
     let counter = 0;
 
     let filteredSocialInteractions = socialInteractions.filter((socialInteraction) => {
-        const currentValueDate = new Date(socialInteraction.date);
+        const currentValueDate = socialInteraction.date;
         return last7DaysDate < currentValueDate && currentValueDate <= dateToday
     });
 
     filteredSocialInteractions.forEach(value => {
-        const dateString = getDateWithoutTimestamp(new Date(value.date)).toString();
+        const dateString = getDateWithoutTimestamp(value.date).toString();
         dateMap[dateString] ? ++dateMap[dateString] : dateMap[dateString] = 1;
     });
 
@@ -57,10 +57,10 @@ export const getSocialInteractionsChartData = (
 
 }
 
-export const filterLastNDays = (daysToGoBack: number, socialInteractions: SocialInteraction[]) : SocialInteraction[] => {
+export const filterLastNDays = (daysToGoBack: number, socialInteractions: SocialInteraction[]): SocialInteraction[] => {
     const acceptableDates = getAcceptableDates(daysToGoBack);
-    let results =  socialInteractions.filter(interaction => (
-        acceptableDates.includes(getDateWithoutTimestamp(new Date(interaction.date)).toString()))
+    let results = socialInteractions.filter(interaction => (
+        acceptableDates.includes(getDateWithoutTimestamp(interaction.date).toString()))
     );
     return results.length !== 0 ? results : [];
 }

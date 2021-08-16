@@ -2,6 +2,7 @@ import {SocialInteraction} from "../models/SocialInteraction";
 
 const SOCIAL_INTERACTION_URL = 'http://localhost:5000/api/social-interactions';
 
+// TODO : IMPROVE ERROR HANDLING FOR THE SERVICE CALLS
 export const getAllSocialInteractions = (): Promise<SocialInteraction[]> => {
 
     const requestOptions = {
