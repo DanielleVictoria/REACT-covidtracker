@@ -31,9 +31,11 @@ const TableDisplay: React.FC<Props> = (props: Props) => {
 
     const getYTickValues = () => {
         const maxNumberInData = Math.max(...props.chartData.map((data) => data.y));
-
-        // If our max data is 3, convert it into this [0, 1, 2 3]
-        return Array.from(Array(maxNumberInData + 1).keys());
+        if (maxNumberInData > 5) {
+            return Array.from(Array(maxNumberInData + 1).keys()); // If our max data is 3, convert it into this [0, 1, 2, 3]
+        } else {
+            return Array.from(Array(6).keys());
+        }
     }
 
     return (
