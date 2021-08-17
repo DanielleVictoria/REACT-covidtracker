@@ -33,7 +33,6 @@ type Props = {
     highlightRow: (rowData: any) => boolean;
 };
 
-// TODO: Upon updating or deleting while sorting, it will not delete the proper data
 const Table: React.FC<Props> = (props: Props) => {
 
     const {columnsConf, dataConf, typeMap} = props;
@@ -81,14 +80,14 @@ const Table: React.FC<Props> = (props: Props) => {
                             props.onUpdate(manipulatedData, rowNumber, tableInstance);
                         }}
                         onEdit={(rowNumber) => {
-                            setManipulatedData(tableInstance.rows[rowNumber].original)
-                            setOriginalData(tableInstance.rows[rowNumber].original);
+                            setManipulatedData(tableInstance.row.original)
+                            setOriginalData(tableInstance.row.original);
                             setCurrentEditingRowIndex(rowNumber);
                             setTableAction(TableAction.EDIT);
                         }}
                         onDelete={rowNumber => {
                             setManipulatedData({});
-                            props.onDelete(tableInstance.rows[rowNumber].original);
+                            props.onDelete(tableInstance.row.original);
                             setTableAction(TableAction.DELETE);
                         }}/>
                 )
