@@ -117,6 +117,7 @@ const SocialInteractionsMasterList = () => {
                     }}
                     overrideRowActionType={tableOverride}
                     hasError={validatorObject === undefined}
+                    highlightRow={(rowData => !(rowData as SocialInteraction).isSocialDistancing)}
                 />
             </div>
 

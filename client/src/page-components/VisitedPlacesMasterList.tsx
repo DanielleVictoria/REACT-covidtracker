@@ -22,7 +22,6 @@ import VisitedPlaceForm from "../forms/VisitedPlaceForm";
 import {VisitedPlace} from "../models/VisitedPlace";
 
 // TODO : After updating a data and we try to click the display records within the last 14 days, this will have an error
-// TODO : Highlight red if crowded
 const VisitedPlacesMasterList = () => {
 
     // ------------- Variable Initializations
@@ -120,6 +119,7 @@ const VisitedPlacesMasterList = () => {
                     }}
                     overrideRowActionType={tableOverride}
                     hasError={validatorObject === undefined}
+                    highlightRow={(rowData => (rowData as VisitedPlace).isCrowded)}
                 />
             </div>
 

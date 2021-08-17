@@ -29,6 +29,8 @@ type Props = {
     /** This is a handling for when the Update and Delete validation fails. This will revert the new values into the
      * value assigned before we clicked the Update/Delete */
     hasError: boolean;
+
+    highlightRow: (rowData: any) => boolean;
 };
 
 // TODO: Upon updating or deleting while sorting, it will not delete the proper data
@@ -200,7 +202,7 @@ const Table: React.FC<Props> = (props: Props) => {
                 {page.map((row) => {
                     prepareRow(row)
                     return (
-                        <tr className={(row.original as any).isSocialDistancing === false ? 'has-background-danger-light' : ''} {...row.getRowProps()}>
+                        <tr className={props.highlightRow(row.original) ? 'has-background-danger-light' : ''} {...row.getRowProps()}>
                             {row.cells.map(cell => {
                                 return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
                             })}
