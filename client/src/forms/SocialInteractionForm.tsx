@@ -61,7 +61,7 @@ const SocialInteractionForm: React.FC<Props> = (props: Props) => {
                         onValueChange={(str) => {
                             setFormData({...formData, name: str})
                         }}
-                        visibilityIndex={1}
+                        visibilityLength={2}
                     />
                 </div>
                 {showValidationMessage('name')}
@@ -117,11 +117,11 @@ const SocialInteractionForm: React.FC<Props> = (props: Props) => {
 
             {/*------------- BUTTON CONTROLS -------------*/}
             <div className="field is-grouped is-pulled-right">
-                <div className="control mt-5">
-                    <button onClick={handleSubmit} type="button" className="button is-success">Save</button>
-                </div>
-                <div className="control mt-5">
+                <div className="control mt-1 mb-2">
                     <button onClick={handleClose} type="button" className="button is-danger">Cancel</button>
+                </div>
+                <div className="control mt-1 mb-2">
+                    <button onClick={handleSubmit} type="button" className="button is-success">Save</button>
                 </div>
             </div>
 
