@@ -21,7 +21,6 @@ import {
 import VisitedPlaceForm from "../forms/VisitedPlaceForm";
 import {VisitedPlace} from "../models/VisitedPlace";
 
-// TODO : After updating a data and we try to click the display records within the last 14 days, this will have an error
 const VisitedPlacesMasterList = () => {
 
     // ------------- Variable Initializations

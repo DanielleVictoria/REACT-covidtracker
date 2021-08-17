@@ -76,8 +76,8 @@ const Table: React.FC<Props> = (props: Props) => {
                             setTableAction(TableAction.CANCEL);
                         }}
                         onUpdate={(manipulatedData, rowNumber) => {
-                            setTableAction(TableAction.UPDATE);
                             props.onUpdate(manipulatedData, rowNumber, tableInstance);
+                            setTableAction(TableAction.UPDATE);
                         }}
                         onEdit={(rowNumber) => {
                             setManipulatedData(tableInstance.row.original)
@@ -102,24 +102,7 @@ const Table: React.FC<Props> = (props: Props) => {
         Cell: EditableCell
     }
 
-    const {
-
-        // Table Properties
-        getTableProps, getTableBodyProps, headerGroups, prepareRow,
-
-        // Page Navigation
-        page, canPreviousPage, canNextPage, pageCount, gotoPage, nextPage, previousPage, setPageSize,
-
-        // Filters
-        setFilter, setAllFilters,
-
-        // State
-        state: {
-            pageIndex,
-            pageSize,
-        },
-
-    } = useTable(
+    const table = useTable(
         {
 
             // Table Configurations
@@ -138,6 +121,25 @@ const Table: React.FC<Props> = (props: Props) => {
         // React table hooks
         useFilters, useSortBy, usePagination
     );
+
+    const {
+
+        // Table Properties
+        getTableProps, getTableBodyProps, headerGroups, prepareRow,
+
+        // Page Navigation
+        page, canPreviousPage, canNextPage, pageCount, gotoPage, nextPage, previousPage, setPageSize,
+
+        // Filters
+        setFilter, setAllFilters,
+
+        // State
+        state: {
+            pageIndex,
+            pageSize,
+        },
+
+    } = table;
 
     // The default view is 5 rows
     useEffect(() => setPageSize(5), [])
