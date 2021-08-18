@@ -2,19 +2,17 @@ import {VisitedPlace} from "../models/VisitedPlace";
 
 const VISITED_PLACE_URL = 'http://localhost:5000/api/visited-places';
 
-export const getAllVisitedPlaces = (): Promise<VisitedPlace[]> => {
+export const getAllVisitedPlaces = async (): Promise<VisitedPlace[]> => {
 
     const requestOptions = {
         method: 'GET'
     }
 
-    return fetch(VISITED_PLACE_URL, requestOptions)
-        .then((response) => response.json())
-        .catch(error => console.error(error));
-
+    const response = await fetch(VISITED_PLACE_URL, requestOptions);
+    return await response.json();
 }
 
-export const addVisitedPlace = (visitedPlace: VisitedPlace) => {
+export const addVisitedPlace = async (visitedPlace: VisitedPlace) => {
 
     const requestOptions = {
         method: 'POST',
@@ -22,12 +20,12 @@ export const addVisitedPlace = (visitedPlace: VisitedPlace) => {
         body: JSON.stringify(visitedPlace)
     }
 
-    return fetch(VISITED_PLACE_URL, requestOptions)
-        .then((response) => response.json());
+    const response = await fetch(VISITED_PLACE_URL, requestOptions);
+    return await response.json();
 
 }
 
-export const updateVisitedPlace = (id: string, visitedPlace: VisitedPlace): Promise<any> => {
+export const updateVisitedPlace = async (id: string, visitedPlace: VisitedPlace): Promise<any> => {
 
     const requestOptions = {
         method: 'PUT',
@@ -35,20 +33,18 @@ export const updateVisitedPlace = (id: string, visitedPlace: VisitedPlace): Prom
         body: JSON.stringify(visitedPlace)
     }
 
-    return fetch(`${VISITED_PLACE_URL}/${id}`, requestOptions)
-        .then((response) => response.json())
-        .catch(error => console.error(error));
+    const response = await fetch(`${VISITED_PLACE_URL}/${id}`, requestOptions);
+    return await response.json();
 
 }
 
-export const deleteVisitedPlace = (id: string): Promise<any> => {
+export const deleteVisitedPlace = async (id: string): Promise<any> => {
 
     const requestOptions = {
         method: 'DELETE',
     }
 
-    return fetch(`${VISITED_PLACE_URL}/${id}`, requestOptions)
-        .then((response) => response.json())
-        .catch(error => console.error(error));
+    const response = await fetch(`${VISITED_PLACE_URL}/${id}`, requestOptions);
+    return await response.json();
 
 }

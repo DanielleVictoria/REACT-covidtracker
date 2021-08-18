@@ -33,7 +33,7 @@ type Props = {
     highlightRow: (rowData: any) => boolean;
 };
 
-const Table: React.FC<Props> = (props: Props) => {
+const ModifiableTable: React.FC<Props> = (props: Props) => {
 
     const {columnsConf, dataConf, typeMap} = props;
 
@@ -222,4 +222,4 @@ const Table: React.FC<Props> = (props: Props) => {
 
 }
 
-export default Table;
+export default ModifiableTable;

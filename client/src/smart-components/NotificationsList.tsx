@@ -1,12 +1,12 @@
 import React from 'react';
 import {HappyOutline} from "react-ionicons";
-import Notification from "./Notification";
+import Notification from "../presentational-components/Notification";
 import {NotificationType} from "../models/NotificationType";
 import {useSelector} from "react-redux";
 import {SocialInteraction} from "../models/SocialInteraction";
 import {VisitedPlace} from "../models/VisitedPlace";
 import {filterLastNDays} from "../filters/GeneralFilters";
-import {StoreState} from "../redux/reducers/StoreState";
+import {StoreState} from "../redux/StoreState";
 
 type Props = {};
 

@@ -6,7 +6,7 @@ import Typeahead from "../presentational-components/Typeahead";
 import {VisitedPlace} from "../models/VisitedPlace";
 import useForm from "../hooks/useForm";
 import {getAllPlaces} from "../filters/VisitedPlacesFilters";
-import {StoreState} from "../redux/reducers/StoreState";
+import {StoreState} from "../redux/StoreState";
 
 type Props = {
     handleClose: () => void;

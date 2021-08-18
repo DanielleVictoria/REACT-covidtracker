@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {useHistory} from "react-router";
 import {Row} from 'react-table';
 import Header from "../presentational-components/Header";
-import Table from "../presentational-components/Table";
+import ModifiableTable from "../presentational-components/ModifiableTable";
 import SimpleModal from "../presentational-components/SimpleModal";
 import useModal from "../hooks/useModal";
 import {filterLastNDaysFromTableObject} from "../filters/TableObjectFilters";
@@ -19,7 +19,7 @@ import {
 } from "../redux/actions/VisitedPlacesActions";
 import VisitedPlaceForm from "../forms/VisitedPlaceForm";
 import {VisitedPlace} from "../models/VisitedPlace";
-import {StoreState} from "../redux/reducers/StoreState";
+import {StoreState} from "../redux/StoreState";
 
 const VisitedPlacesMasterList = () => {
 
@@ -64,7 +64,7 @@ const VisitedPlacesMasterList = () => {
                         </button>
                     </div>
                 </div>
-                <Table
+                <ModifiableTable
                     columnsConf={
                         [
                             {Header: 'Place', accessor: 'place'},

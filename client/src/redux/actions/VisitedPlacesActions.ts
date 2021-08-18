@@ -3,10 +3,13 @@ import * as service from "../../services/VisitedPlaceService";
 import * as types from "./ActionTypes";
 import {VisitedPlace} from "../../models/VisitedPlace";
 
-export function getAllVisitedPlaces(dispatch: Dispatch<any>) {
-    service
-        .getAllVisitedPlaces()
-        .then((results) => dispatch(getAllVisitedPlacesSuccess(results)))
+export async function getAllVisitedPlaces(dispatch: Dispatch<any>) {
+    try {
+        const data = await service.getAllVisitedPlaces();
+        dispatch(getAllVisitedPlacesSuccess(data));
+    } catch (e) {
+        alert(e);
+    }
 }
 
 export function getAllVisitedPlacesSuccess(visitedPlaces: VisitedPlace[]) {
@@ -18,10 +21,13 @@ export function getAllVisitedPlacesSuccess(visitedPlaces: VisitedPlace[]) {
     };
 }
 
-export function addVisitedPlace(dispatch: Dispatch<any>, payload: VisitedPlace) {
-    service
-        .addVisitedPlace(payload)
-        .then(visitedPlace => dispatch(addVisitedPlaceSuccess(visitedPlace)))
+export async function addVisitedPlace(dispatch: Dispatch<any>, payload: VisitedPlace) {
+    try {
+        const data = await service.addVisitedPlace(payload);
+        dispatch(addVisitedPlaceSuccess(data));
+    } catch (e) {
+        alert(e);
+    }
 }
 
 export function addVisitedPlaceSuccess(visitedPlace: VisitedPlace) {
@@ -33,10 +39,13 @@ export function addVisitedPlaceSuccess(visitedPlace: VisitedPlace) {
     };
 }
 
-export function updateVisitedPlace(dispatch: Dispatch<any>, _id: string, payload: VisitedPlace) {
-    service
-        .updateVisitedPlace(_id, payload)
-        .then(result => dispatch(updateVisitedPlaceSuccess(_id, result)))
+export async function updateVisitedPlace(dispatch: Dispatch<any>, _id: string, payload: VisitedPlace) {
+    try {
+        const data = await service.updateVisitedPlace(_id, payload);
+        dispatch(updateVisitedPlaceSuccess(_id, data));
+    } catch (e) {
+        alert(e);
+    }
 }
 
 export function updateVisitedPlaceSuccess(_id: string, visitedPlace: VisitedPlace) {
@@ -49,10 +58,13 @@ export function updateVisitedPlaceSuccess(_id: string, visitedPlace: VisitedPlac
     };
 }
 
-export function deleteVisitedPlace(dispatch: Dispatch<any>, _id: string) {
-    service
-        .deleteVisitedPlace(_id)
-        .then(() => dispatch(deleteVisitedPlaceSuccess(_id)))
+export async function deleteVisitedPlace(dispatch: Dispatch<any>, _id: string) {
+    try {
+        const data = await service.deleteVisitedPlace(_id);
+        dispatch(deleteVisitedPlaceSuccess(_id));
+    } catch (e) {
+        alert(e);
+    }
 }
 
 export function deleteVisitedPlaceSuccess(_id: string) {

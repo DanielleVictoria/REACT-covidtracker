@@ -9,7 +9,7 @@ import {
 import {SocialInteraction} from "../models/SocialInteraction";
 import {Row} from 'react-table';
 import Header from "../presentational-components/Header";
-import Table from "../presentational-components/Table";
+import ModifiableTable from "../presentational-components/ModifiableTable";
 import SimpleModal from "../presentational-components/SimpleModal";
 import SocialInteractionForm from "../forms/SocialInteractionForm";
 import useModal from "../hooks/useModal";
@@ -18,7 +18,7 @@ import {generalFormValidator} from "../validators/GeneralFormValidator";
 import {ValidatorReturnObject} from "../models/ValidatorReturnObject";
 import {TableAction} from "../models/TableAction";
 import ErrorTable from "../presentational-components/ErrorTable";
-import {StoreState} from "../redux/reducers/StoreState";
+import {StoreState} from "../redux/StoreState";
 const SocialInteractionsMasterList = () => {
 
     // ------------- Variable Initializations
@@ -62,7 +62,7 @@ const SocialInteractionsMasterList = () => {
                         </button>
                     </div>
                 </div>
-                <Table
+                <ModifiableTable
                     columnsConf={
                         [
                             {Header: 'Person', accessor: 'name'},

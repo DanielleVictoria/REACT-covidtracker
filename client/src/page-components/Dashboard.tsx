@@ -9,14 +9,15 @@ import React, {useEffect} from "react";
 import TableDisplay from "../presentational-components/TableDisplay";
 import {addSocialInteraction, getAllSocialInteractions} from "../redux/actions/SocialInteractionsActions";
 import {useHistory} from "react-router";
-import NotificationsList from "../presentational-components/NotificationsList";
+import NotificationsList from "../smart-components/NotificationsList";
 import VisitedPlaceForm from "../forms/VisitedPlaceForm";
 import {addVisitedPlace, getAllVisitedPlaces} from "../redux/actions/VisitedPlacesActions";
 import {getVisitedPlacesChartData} from "../filters/VisitedPlacesFilters";
-import {StoreState} from "../redux/reducers/StoreState";
+import {StoreState} from "../redux/StoreState";
 
 // TODO : Implement ResetData
 // TODO : Apply confirmation when deleting
+// TODO : Refractor codes and create folders for smart components
 const Dashboard = () => {
 
     // ------------- Variable Initializations

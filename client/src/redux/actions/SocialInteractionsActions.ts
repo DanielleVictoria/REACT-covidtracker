@@ -3,10 +3,13 @@ import * as service from "../../services/SocialInteractionService";
 import * as types from "./ActionTypes";
 import {SocialInteraction} from "../../models/SocialInteraction";
 
-export function getAllSocialInteractions(dispatch: Dispatch<any>) {
-    service
-        .getAllSocialInteractions()
-        .then((socialInteractions) => dispatch(getAllSocialInteractionsSuccess(socialInteractions)))
+export async function getAllSocialInteractions(dispatch: Dispatch<any>) {
+    try {
+        const data = await service.getAllSocialInteractions();
+        dispatch(getAllSocialInteractionsSuccess(data));
+    } catch (e) {
+        alert(e);
+    }
 }
 
 export function getAllSocialInteractionsSuccess(socialInteractions: SocialInteraction[]) {
@@ -18,10 +21,13 @@ export function getAllSocialInteractionsSuccess(socialInteractions: SocialIntera
     };
 }
 
-export function addSocialInteraction(dispatch: Dispatch<any>, payload: SocialInteraction) {
-    service
-        .addSocialInteraction(payload)
-        .then(socialInteraction => dispatch(addSocialInteractionSuccess(socialInteraction)))
+export async function addSocialInteraction(dispatch: Dispatch<any>, payload: SocialInteraction) {
+    try {
+        const data = await service.addSocialInteraction(payload);
+        dispatch(addSocialInteractionSuccess(data));
+    } catch (e) {
+        alert(e);
+    }
 }
 
 export function addSocialInteractionSuccess(socialInteraction: SocialInteraction) {
@@ -33,10 +39,13 @@ export function addSocialInteractionSuccess(socialInteraction: SocialInteraction
     };
 }
 
-export function updateSocialInteraction(dispatch: Dispatch<any>, _id: string, payload: SocialInteraction) {
-    service
-        .updateSocialInteraction(_id, payload)
-        .then(result => dispatch(updateSocialInteractionSuccess(_id, result)))
+export async function updateSocialInteraction(dispatch: Dispatch<any>, _id: string, payload: SocialInteraction) {
+    try {
+        const data = await service.updateSocialInteraction(_id, payload);
+        dispatch(updateSocialInteractionSuccess(_id, data));
+    } catch (e) {
+        alert(e);
+    }
 }
 
 export function updateSocialInteractionSuccess(_id: string, socialInteraction: SocialInteraction) {
@@ -49,10 +58,13 @@ export function updateSocialInteractionSuccess(_id: string, socialInteraction: S
     };
 }
 
-export function deleteSocialInteraction(dispatch: Dispatch<any>, _id: string) {
-    service
-        .deleteSocialInteraction(_id)
-        .then(() => dispatch(deleteSocialInteractionSuccess(_id)))
+export async function deleteSocialInteraction(dispatch: Dispatch<any>, _id: string) {
+    try {
+        const data = await service.deleteSocialInteraction(_id);
+        dispatch(deleteSocialInteractionSuccess(_id));
+    } catch (e) {
+        alert(e);
+    }
 }
 
 export function deleteSocialInteractionSuccess(_id: string) {

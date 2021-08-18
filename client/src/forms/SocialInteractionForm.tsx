@@ -6,7 +6,7 @@ import {useSelector} from "react-redux";
 import {getAllNames} from "../filters/SocialInteractionsFilters";
 import {generalFormValidator} from "../validators/GeneralFormValidator";
 import useForm from "../hooks/useForm";
-import {StoreState} from "../redux/reducers/StoreState";
+import {StoreState} from "../redux/StoreState";
 
 type Props = {
     handleClose: () => void;
