@@ -1,6 +1,10 @@
-import { createStore } from "redux";
-import reducer from "./reducers/Reducer";
+import { createStore, combineReducers } from "redux";
+import socialInteractionsReducer from "./reducers/SocialInteractionsReducer";
+import visitedPlacesReducer from "./reducers/VisitedPlacesReducer";
 
 export default function configureState() {
-    return createStore(reducer);
+    return createStore(combineReducers({
+        socialInteractions: socialInteractionsReducer,
+        visitedPlaces: visitedPlacesReducer,
+    }));
 }

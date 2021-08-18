@@ -2,10 +2,11 @@ import React from 'react';
 import {HappyOutline} from "react-ionicons";
 import Notification from "./Notification";
 import {NotificationType} from "../models/NotificationType";
-import {filterLastNDays} from "../filters/SocialInteractionsFilters";
 import {useSelector} from "react-redux";
-import {StoreState} from "../redux/StoreState";
-import {filterLastNDaysVisitedPlaces} from "../filters/VisitedPlacesFilters";
+import {SocialInteraction} from "../models/SocialInteraction";
+import {VisitedPlace} from "../models/VisitedPlace";
+import {filterLastNDays} from "../filters/GeneralFilters";
+import {StoreState} from "../redux/reducers/StoreState";
 
 type Props = {};
 
@@ -14,15 +15,15 @@ const NotificationsList: React.FC<Props> = (props: Props) => {
     const hadInteractions = useSelector<StoreState>(
         (state) => (
             filterLastNDays(14, state.socialInteractions)
-                .filter(interaction => !interaction.isSocialDistancing)
+                .filter((result: SocialInteraction) => !result.isSocialDistancing)
                 .length !== 0
         )
     ) as boolean;
 
     const exposedToCrowdedPlaces = useSelector<StoreState>(
         (state) => (
-            filterLastNDaysVisitedPlaces(14, state.visitedPlaces)
-                .filter(place => place.isCrowded)
+            filterLastNDays(14, state.visitedPlaces)
+                .filter((result: VisitedPlace) => result.isCrowded)
                 .length !== 0
         )
     ) as boolean;

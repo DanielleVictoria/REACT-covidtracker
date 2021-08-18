@@ -1,7 +1,7 @@
 import {Dispatch} from "react";
-import * as service from "../../../services/SocialInteractionService";
+import * as service from "../../services/SocialInteractionService";
 import * as types from "./ActionTypes";
-import {SocialInteraction} from "../../../models/SocialInteraction";
+import {SocialInteraction} from "../../models/SocialInteraction";
 
 export function getAllSocialInteractions(dispatch: Dispatch<any>) {
     service

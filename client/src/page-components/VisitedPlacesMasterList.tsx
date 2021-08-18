@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {useHistory} from "react-router";
-import {StoreState} from "../redux/StoreState";
 import {Row} from 'react-table';
 import Header from "../presentational-components/Header";
 import Table from "../presentational-components/Table";
@@ -17,9 +16,10 @@ import {
     deleteVisitedPlace,
     getAllVisitedPlaces,
     updateVisitedPlace
-} from "../redux/actions/visited-places/Actions";
+} from "../redux/actions/VisitedPlacesActions";
 import VisitedPlaceForm from "../forms/VisitedPlaceForm";
 import {VisitedPlace} from "../models/VisitedPlace";
+import {StoreState} from "../redux/reducers/StoreState";
 
 const VisitedPlacesMasterList = () => {
 

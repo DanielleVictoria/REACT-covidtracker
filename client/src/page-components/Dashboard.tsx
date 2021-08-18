@@ -3,18 +3,20 @@ import SocialInteractionForm from "../forms/SocialInteractionForm";
 import {getSocialInteractionsChartData} from "../filters/SocialInteractionsFilters";
 import {useDispatch, useSelector} from "react-redux";
 import useModal from "../hooks/useModal";
-import {StoreState} from "../redux/StoreState";
 import SimpleModal from "../presentational-components/SimpleModal";
 import Header from "../presentational-components/Header";
 import React, {useEffect} from "react";
 import TableDisplay from "../presentational-components/TableDisplay";
-import {addSocialInteraction, getAllSocialInteractions} from "../redux/actions/social-interactions/Actions";
+import {addSocialInteraction, getAllSocialInteractions} from "../redux/actions/SocialInteractionsActions";
 import {useHistory} from "react-router";
 import NotificationsList from "../presentational-components/NotificationsList";
 import VisitedPlaceForm from "../forms/VisitedPlaceForm";
-import {addVisitedPlace, getAllVisitedPlaces} from "../redux/actions/visited-places/Actions";
+import {addVisitedPlace, getAllVisitedPlaces} from "../redux/actions/VisitedPlacesActions";
 import {getVisitedPlacesChartData} from "../filters/VisitedPlacesFilters";
+import {StoreState} from "../redux/reducers/StoreState";
 
+// TODO : Implement ResetData
+// TODO : Apply confirmation when deleting
 const Dashboard = () => {
 
     // ------------- Variable Initializations
@@ -47,12 +49,12 @@ const Dashboard = () => {
                 title='COVID Exposure Tracker Tool'
                 tabInformation={[
                     {
-                        title: 'Add Social Interaction',
-                        onTabClick: socialInteractionModal.showModal
-                    },
-                    {
                         title: 'Add Place Exposure',
                         onTabClick: placeExposureModal.showModal
+                    },
+                    {
+                        title: 'Add Social Interaction',
+                        onTabClick: socialInteractionModal.showModal
                     },
                     {
                         title: 'Reset Data',
@@ -78,7 +80,7 @@ const Dashboard = () => {
                 </div>
                 <div className="column">
                     <TableDisplay
-                        title={"Recent Social Places"}
+                        title={"Recent Social Interactions"}
                         onViewAll={() => history.push('/social-interactions')}
                         chartData={socialInteractionsChartData}
                         chartTickValues={[1, 2, 3, 4, 5, 6, 7]}

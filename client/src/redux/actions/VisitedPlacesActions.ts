@@ -1,7 +1,7 @@
 import {Dispatch} from "react";
-import * as service from "../../../services/VisitedPlaceService";
-import * as types from "../social-interactions/ActionTypes";
-import {VisitedPlace} from "../../../models/VisitedPlace";
+import * as service from "../../services/VisitedPlaceService";
+import * as types from "./ActionTypes";
+import {VisitedPlace} from "../../models/VisitedPlace";
 
 export function getAllVisitedPlaces(dispatch: Dispatch<any>) {
     service

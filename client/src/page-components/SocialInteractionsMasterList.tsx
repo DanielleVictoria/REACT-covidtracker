@@ -5,8 +5,7 @@ import {
     addSocialInteraction, deleteSocialInteraction,
     getAllSocialInteractions,
     updateSocialInteraction
-} from "../redux/actions/social-interactions/Actions";
-import {StoreState} from "../redux/StoreState";
+} from "../redux/actions/SocialInteractionsActions";
 import {SocialInteraction} from "../models/SocialInteraction";
 import {Row} from 'react-table';
 import Header from "../presentational-components/Header";
@@ -19,7 +18,7 @@ import {generalFormValidator} from "../validators/GeneralFormValidator";
 import {ValidatorReturnObject} from "../models/ValidatorReturnObject";
 import {TableAction} from "../models/TableAction";
 import ErrorTable from "../presentational-components/ErrorTable";
-
+import {StoreState} from "../redux/reducers/StoreState";
 const SocialInteractionsMasterList = () => {
 
     // ------------- Variable Initializations

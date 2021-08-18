@@ -1,5 +1,5 @@
 import {SocialInteraction} from "../models/SocialInteraction";
-import {getAcceptableDates, getDateNDaysAgo, getDateWithoutTimestamp} from "../services/DateHelperService";
+import {getDateNDaysAgo, getDateWithoutTimestamp} from "../services/DateHelperService";
 
 /**
  * Gets all names of social interactions with no duplicates
@@ -9,14 +9,6 @@ export const getAllNames = (socialInteractions: SocialInteraction[]): string[] =
     const names = socialInteractions.map(socialInteraction => socialInteraction.name);
     return Array.from(new Set(names));
 }
-
-export const formatResultsSocialInteractions = (socialInteractions: SocialInteraction[]): SocialInteraction[] => {
-    return socialInteractions.map((socialInteraction) => ({
-        ...socialInteraction,
-        date: new Date(socialInteraction.date)
-    }));
-}
-
 
 /**
  * Maps an array of social interaction into {x,y} objects that matches Victory chart library
@@ -56,10 +48,4 @@ export const getSocialInteractionsChartData = (
 
 }
 
-export const filterLastNDays = (daysToGoBack: number, socialInteractions: SocialInteraction[]): SocialInteraction[] => {
-    const acceptableDates = getAcceptableDates(daysToGoBack);
-    let results = socialInteractions.filter(interaction => (
-        acceptableDates.includes(getDateWithoutTimestamp(interaction.date).toString()))
-    );
-    return results.length !== 0 ? results : [];
-}
+

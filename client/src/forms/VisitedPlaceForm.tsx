@@ -1,12 +1,12 @@
-import React, {useEffect} from "react";
+import React from "react";
 import '../bulma/mystyles.css';
 import {useSelector} from "react-redux";
-import {StoreState} from "../redux/StoreState";
 import {generalFormValidator} from "../validators/GeneralFormValidator";
 import Typeahead from "../presentational-components/Typeahead";
 import {VisitedPlace} from "../models/VisitedPlace";
 import useForm from "../hooks/useForm";
 import {getAllPlaces} from "../filters/VisitedPlacesFilters";
+import {StoreState} from "../redux/reducers/StoreState";
 
 type Props = {
     handleClose: () => void;

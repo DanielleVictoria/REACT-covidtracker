@@ -3,10 +3,10 @@ import '../bulma/mystyles.css';
 import {SocialInteraction} from "../models/SocialInteraction";
 import Typeahead from "../presentational-components/Typeahead";
 import {useSelector} from "react-redux";
-import {StoreState} from "../redux/StoreState";
 import {getAllNames} from "../filters/SocialInteractionsFilters";
 import {generalFormValidator} from "../validators/GeneralFormValidator";
 import useForm from "../hooks/useForm";
+import {StoreState} from "../redux/reducers/StoreState";
 
 type Props = {
     handleClose: () => void;
