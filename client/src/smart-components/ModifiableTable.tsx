@@ -1,10 +1,10 @@
 import React, {useEffect, useMemo, useState} from "react";
 import {Column, TableInstance, useFilters, usePagination, useSortBy, useTable} from "react-table";
 import {ArrowDownOutline, ArrowUpOutline} from "react-ionicons";
-import TableControls from "./TableControls";
-import PageSizeSelector from "./PageSizeSelector";
-import Pagination from "./Pagination";
-import EditableCell from "./EditableCell";
+import TableControls from "../presentational-components/TableControls";
+import PageSizeSelector from "../presentational-components/PageSizeSelector";
+import Pagination from "../presentational-components/Pagination";
+import EditableCell from "../presentational-components/EditableCell";
 import {TypeMap} from "../models/TypeMap";
 import {TableAction} from "../models/TableAction";
 

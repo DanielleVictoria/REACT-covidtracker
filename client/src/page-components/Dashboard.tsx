@@ -17,7 +17,6 @@ import {StoreState} from "../redux/StoreState";
 
 // TODO : Implement ResetData
 // TODO : Apply confirmation when deleting
-// TODO : Refractor codes and create folders for smart components
 const Dashboard = () => {
 
     // ------------- Variable Initializations

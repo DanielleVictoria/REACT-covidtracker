@@ -9,12 +9,12 @@ import {
 import {SocialInteraction} from "../models/SocialInteraction";
 import {Row} from 'react-table';
 import Header from "../presentational-components/Header";
-import ModifiableTable from "../presentational-components/ModifiableTable";
+import ModifiableTable from "../smart-components/ModifiableTable";
 import SimpleModal from "../presentational-components/SimpleModal";
 import SocialInteractionForm from "../forms/SocialInteractionForm";
 import useModal from "../hooks/useModal";
 import {filterLastNDaysFromTableObject} from "../filters/TableObjectFilters";
-import {generalFormValidator} from "../validators/GeneralFormValidator";
+import {generalFormValidator} from "../forms/GeneralFormValidator";
 import {ValidatorReturnObject} from "../models/ValidatorReturnObject";
 import {TableAction} from "../models/TableAction";
 import ErrorTable from "../presentational-components/ErrorTable";

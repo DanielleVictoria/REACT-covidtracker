@@ -1,7 +1,7 @@
 import React from "react";
 import '../bulma/mystyles.css';
 import {useSelector} from "react-redux";
-import {generalFormValidator} from "../validators/GeneralFormValidator";
+import {generalFormValidator} from "./GeneralFormValidator";
 import Typeahead from "../presentational-components/Typeahead";
 import {VisitedPlace} from "../models/VisitedPlace";
 import useForm from "../hooks/useForm";
