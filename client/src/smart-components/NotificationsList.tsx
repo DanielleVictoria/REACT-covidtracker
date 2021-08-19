@@ -1,9 +1,11 @@
 import React from 'react';
 import {HappyOutline} from "react-ionicons";
-import Notification from "./Notification";
+import Notification from "../presentational-components/Notification";
 import {NotificationType} from "../models/NotificationType";
-import {filterLastNDays} from "../filters/SocialInteractionsFilters";
 import {useSelector} from "react-redux";
+import {SocialInteraction} from "../models/SocialInteraction";
+import {VisitedPlace} from "../models/VisitedPlace";
+import {filterLastNDays} from "../filters/GeneralFilters";
 import {StoreState} from "../redux/StoreState";
 
 type Props = {};
@@ -13,7 +15,15 @@ const NotificationsList: React.FC<Props> = (props: Props) => {
     const hadInteractions = useSelector<StoreState>(
         (state) => (
             filterLastNDays(14, state.socialInteractions)
-                .filter(interaction => !interaction.isSocialDistancing)
+                .filter((result: SocialInteraction) => !result.isSocialDistancing)
+                .length !== 0
+        )
+    ) as boolean;
+
+    const exposedToCrowdedPlaces = useSelector<StoreState>(
+        (state) => (
+            filterLastNDays(14, state.visitedPlaces)
+                .filter((result: VisitedPlace) => result.isCrowded)
                 .length !== 0
         )
     ) as boolean;
@@ -30,7 +40,7 @@ const NotificationsList: React.FC<Props> = (props: Props) => {
                             />
                         </div>
                         <div className="level-item">
-                                <span className='mx-2'>Welcome Back</span>
+                            <span className='mx-2'>Welcome Back</span>
                         </div>
                     </div>
                 </div>
@@ -40,7 +50,22 @@ const NotificationsList: React.FC<Props> = (props: Props) => {
             <div className="columns">
 
                 <div className="column">
-                    <Notification type={NotificationType.SUCCESS} message={'Success'}/>
+
+                    {/*Visited Places Notification*/}
+                    {(() => {
+                        if (exposedToCrowdedPlaces) {
+                            return (
+                                <Notification
+                                    type={NotificationType.DANGER}
+                                    message={'You have been exposed to a crowded place for the last 14 days. ' +
+                                    'Try to avoid crowded places to minimize your exposure risk.'}/>)
+                        } else {
+                            return (
+                                <Notification
+                                    type={NotificationType.SUCCESS}
+                                    message={'Thank you for helping to stop spread the virus by staying home.'}/>)
+                        }
+                    })()}
                 </div>
 
                 {/*Social Interaction Notification*/}

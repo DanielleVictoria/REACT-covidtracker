@@ -1,9 +1,7 @@
 import {SocialInteraction} from "../models/SocialInteraction";
+import {VisitedPlace} from "../models/VisitedPlace";
 
 export interface StoreState {
-  socialInteractions: SocialInteraction[];
+    socialInteractions: SocialInteraction[],
+    visitedPlaces: VisitedPlace[],
 }
-
-export const initialState: StoreState = {
-  socialInteractions: [],
-};

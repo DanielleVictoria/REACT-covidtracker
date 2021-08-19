@@ -1,21 +1,13 @@
-import {SocialInteraction} from "../models/SocialInteraction";
+import {VisitedPlace} from "../models/VisitedPlace";
 import {getDateNDaysAgo, getDateWithoutTimestamp} from "../services/DateHelperService";
 
-/**
- * Gets all names of social interactions with no duplicates
- * @param socialInteractions
- */
-export const getAllNames = (socialInteractions: SocialInteraction[]): string[] => {
-    const names = socialInteractions.map(socialInteraction => socialInteraction.name);
-    return Array.from(new Set(names));
+export const getAllPlaces = (visitedPlaces: VisitedPlace[]): string[] => {
+    const places = visitedPlaces.map(place => place.place);
+    return Array.from(new Set(places));
 }
 
-/**
- * Maps an array of social interaction into {x,y} objects that matches Victory chart library
- * @param socialInteractions
- */
-export const getSocialInteractionsChartData = (
-    socialInteractions: SocialInteraction[],
+export const getVisitedPlacesChartData = (
+    visitedPlaces: VisitedPlace[],
 ): { x: number, y: number }[] => {
 
     const daysInterval = 6;
@@ -26,12 +18,12 @@ export const getSocialInteractionsChartData = (
     let results: { x: number, y: number }[] = [];
     let counter = 0;
 
-    let filteredSocialInteractions = socialInteractions.filter((socialInteraction) => {
-        const currentValueDate = socialInteraction.date;
+    let filteredVisitedPlaces = visitedPlaces.filter((visitedPlace) => {
+        const currentValueDate = visitedPlace.date;
         return initialDate < currentValueDate && currentValueDate <= dateToday
     });
 
-    filteredSocialInteractions.forEach(value => {
+    filteredVisitedPlaces.forEach(value => {
         const dateString = getDateWithoutTimestamp(value.date).toString();
         dateMap[dateString] ? ++dateMap[dateString] : dateMap[dateString] = 1;
     });
@@ -47,5 +39,3 @@ export const getSocialInteractionsChartData = (
     return results;
 
 }
-
-

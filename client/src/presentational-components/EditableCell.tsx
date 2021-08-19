@@ -16,6 +16,7 @@ const EditableCell = (obj: TableInstance) => {
         tableAction,
         manipulatedData,
         setManipulatedData,
+        setTableAction,
     } = obj;
 
     // @ts-ignore
@@ -41,6 +42,7 @@ const EditableCell = (obj: TableInstance) => {
             case TableAction.UPDATE : {
                 setValue(originalValue);
                 setManipulatedData({...manipulatedData, [id]: originalValue}) // State of the value in Table scope
+                setTableAction(TableAction.NONE);
                 break;
             }
         }

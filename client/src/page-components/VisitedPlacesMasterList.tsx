@@ -1,25 +1,27 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {useHistory} from "react-router";
-import {
-    addSocialInteraction, deleteSocialInteraction,
-    getAllSocialInteractions,
-    updateSocialInteraction
-} from "../redux/actions/SocialInteractionsActions";
-import {SocialInteraction} from "../models/SocialInteraction";
 import {Row} from 'react-table';
 import Header from "../presentational-components/Header";
 import ModifiableTable from "../smart-components/ModifiableTable";
 import SimpleModal from "../presentational-components/SimpleModal";
-import SocialInteractionForm from "../forms/SocialInteractionForm";
 import useModal from "../hooks/useModal";
 import {filterLastNDaysFromTableObject} from "../filters/TableObjectFilters";
 import {generalFormValidator} from "../forms/GeneralFormValidator";
 import {ValidatorReturnObject} from "../models/ValidatorReturnObject";
 import {TableAction} from "../models/TableAction";
 import ErrorTable from "../presentational-components/ErrorTable";
+import {
+    addVisitedPlace,
+    deleteVisitedPlace,
+    getAllVisitedPlaces,
+    updateVisitedPlace
+} from "../redux/actions/VisitedPlacesActions";
+import VisitedPlaceForm from "../forms/VisitedPlaceForm";
+import {VisitedPlace} from "../models/VisitedPlace";
 import {StoreState} from "../redux/StoreState";
-const SocialInteractionsMasterList = () => {
+
+const VisitedPlacesMasterList = () => {
 
     // ------------- Variable Initializations
     const dispatch = useDispatch();
@@ -30,11 +32,11 @@ const SocialInteractionsMasterList = () => {
     const [tableOverride, setTableOverride] = useState<{ rowIndex: number, actionType: TableAction }>();
 
     useEffect(() => {
-        getAllSocialInteractions(dispatch)
+        getAllVisitedPlaces(dispatch);
     }, []);
 
     // ------------- Modal functionalities
-    const socialInteractionModal = useModal();
+    const visitedPlaceModal = useModal();
     const validationErrorsModal = useModal();
 
     return (
@@ -54,18 +56,18 @@ const SocialInteractionsMasterList = () => {
             <div className="section">
                 <div className="columns">
                     <div className="column">
-                        <h1 className="title is-size-4">Social Interactions List</h1>
+                        <h1 className="title is-size-4">Visited Places List</h1>
                     </div>
                     <div className="column">
-                        <button onClick={socialInteractionModal.showModal}
-                                className="button is-primary is-pulled-right">Add Social Interaction
+                        <button onClick={visitedPlaceModal.showModal}
+                                className="button is-primary is-pulled-right">Add Visited Place
                         </button>
                     </div>
                 </div>
                 <ModifiableTable
                     columnsConf={
                         [
-                            {Header: 'Person', accessor: 'name'},
+                            {Header: 'Place', accessor: 'place'},
                             {
                                 Header: 'Date',
                                 accessor: 'date',
@@ -78,8 +80,8 @@ const SocialInteractionsMasterList = () => {
                             },
                             {Header: 'Hours', accessor: 'hours'},
                             {
-                                Header: 'Is Practicing SD?',
-                                accessor: 'isSocialDistancing',
+                                Header: 'Is Crowded?',
+                                accessor: 'isCrowded',
                                 sortType: (rowA: Row, rowB: Row, columnId: string): number => {
                                     return rowA.values[columnId] === true ? 1 : -1;
                                 }
@@ -88,10 +90,10 @@ const SocialInteractionsMasterList = () => {
                     }
                     dataConf={
                         useSelector<StoreState>(
-                            (state) => state.socialInteractions.map(interaction => (
-                                {...interaction, date: interaction.date.toLocaleDateString('en-CA')}
+                            (state) => state.visitedPlaces.map(place => (
+                                {...place, date: place.date.toLocaleDateString('en-CA')}
                             ))
-                        ) as SocialInteraction[]
+                        ) as VisitedPlace[]
                     }
                     onUpdate={(data, rowIndex, tableInstance) => {
                         const validationObject = generalFormValidator(data);
@@ -103,31 +105,32 @@ const SocialInteractionsMasterList = () => {
                         } else {
                             setValidationObject(undefined);
                         }
-                        updateSocialInteraction(dispatch, data._id, data as SocialInteraction);
+                        updateVisitedPlace(dispatch, data._id, data as VisitedPlace);
                     }}
                     onDelete={(data) => {
-                        deleteSocialInteraction(dispatch, (data as SocialInteraction)._id);
+                        deleteVisitedPlace(dispatch, (data as VisitedPlace)._id);
                     }}
                     typeMap={{
-                        name: {type: 'text'},
+                        place: {type: 'text'},
                         date: {type: 'date'},
                         hours: {type: 'number'},
-                        isSocialDistancing: {type: 'checkbox'}
+                        isCrowded: {type: 'checkbox'}
                     }}
                     overrideRowActionType={tableOverride}
                     hasError={validatorObject === undefined}
-                    highlightRow={(rowData => !(rowData as SocialInteraction).isSocialDistancing)}
+                    highlightRow={(rowData => (rowData as VisitedPlace).isCrowded)}
                 />
             </div>
 
             {/*------------- MODALS -------------*/}
             <SimpleModal
-                title="Add Social Interaction"
-                show={socialInteractionModal.isShown}
-                handleClose={socialInteractionModal.hideModal}>
-                <SocialInteractionForm
-                    handleClose={socialInteractionModal.hideModal}
-                    handleSubmit={(socialInteraction) => addSocialInteraction(dispatch, socialInteraction)}/>
+                title="Add Visited Place"
+                show={visitedPlaceModal.isShown}
+                handleClose={visitedPlaceModal.hideModal}>
+                <VisitedPlaceForm
+                    handleClose={visitedPlaceModal.hideModal}
+                    handleSubmit={visitedPlace => addVisitedPlace(dispatch, visitedPlace)}
+                />
             </SimpleModal>
 
             <SimpleModal
@@ -151,4 +154,4 @@ const SocialInteractionsMasterList = () => {
     )
 }
 
-export default SocialInteractionsMasterList;
+export default VisitedPlacesMasterList;

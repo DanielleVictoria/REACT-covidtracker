@@ -10,12 +10,10 @@ type Props = {
     onValueChange: (option: string) => void;
 
     /** How many letters should the user type to make the typeahead appear */
-    visibilityIndex: number;
+    visibilityLength: number;
 
 }
 
-// TODO : FIX THE SIZING
-// TODO [ERROR] : When we fill out the Typeahead and if we backspace completely, it doesn't remove the button
 const Typeahead: React.FC<Props> = (props: Props) => {
 
     const [textValue, setTextValue] = useState(""); // Value on the text box itself
@@ -39,8 +37,8 @@ const Typeahead: React.FC<Props> = (props: Props) => {
         const target = event.target;
         const value = target.value;
         setTextValue(value);
-        setOptions(props.options.filter(option => option.startsWith(value)));
-        value.length >= props.visibilityIndex ? setIsDropdownActive(true) : setIsDropdownActive(false);
+        setOptions(props.options.filter(option => option.toLowerCase().startsWith(value.toLowerCase())));
+        value.length >= props.visibilityLength ? setIsDropdownActive(true) : setIsDropdownActive(false);
     }
 
     const onOptionClick = (option: string) => {
@@ -50,7 +48,7 @@ const Typeahead: React.FC<Props> = (props: Props) => {
     }
 
     const getDropdownClass = () => {
-        return `dropdown is-fullwidth ${isDropdownActive ? "is-active" : ""}`;
+        return `dropdown is-fullwidth is-block is-hoverable`;
     }
 
     return (
@@ -70,20 +68,20 @@ const Typeahead: React.FC<Props> = (props: Props) => {
 
                     {/*------------- REMOVE SUGGESTIONS -------------*/}
                     <div className="column">
-                        {(() => {
-                            if (options.length > 0) {
-                                return (
-                                    <button
-                                        onClick={() => {
-                                            setIsDropdownActive(false);
-                                            setOptions([]);
-                                        }}
-                                        type="button"
-                                        className="is-small button">Remove Suggestions
-                                    </button>
-                                )
-                            }
-                        })()}
+                        {/*{(() => {*/}
+                        {/*    if (options.length > 0 && isDropdownActive) {*/}
+                        {/*        return (*/}
+                        {/*            <button*/}
+                        {/*                onClick={() => {*/}
+                        {/*                    setIsDropdownActive(false);*/}
+                        {/*                    setOptions([]);*/}
+                        {/*                }}*/}
+                        {/*                type="button"*/}
+                        {/*                className="is-small button">Remove Suggestions*/}
+                        {/*            </button>*/}
+                        {/*        )*/}
+                        {/*    }*/}
+                        {/*})()}*/}
                     </div>
 
                 </div>
@@ -91,7 +89,7 @@ const Typeahead: React.FC<Props> = (props: Props) => {
 
             {/*------------- DROPDOWN MENU -------------*/}
             {(() => {
-                if (options.length > 0) {
+                if (options.length > 0 && isDropdownActive) {
                     return <div className="dropdown-menu" id="dropdown-menu" role="menu">
                         <div className="dropdown-content">
                             {options.map((option) => (

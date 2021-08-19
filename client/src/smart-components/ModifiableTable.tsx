@@ -1,10 +1,10 @@
 import React, {useEffect, useMemo, useState} from "react";
 import {Column, TableInstance, useFilters, usePagination, useSortBy, useTable} from "react-table";
 import {ArrowDownOutline, ArrowUpOutline} from "react-ionicons";
-import TableControls from "./TableControls";
-import PageSizeSelector from "./PageSizeSelector";
-import Pagination from "./Pagination";
-import EditableCell from "./EditableCell";
+import TableControls from "../presentational-components/TableControls";
+import PageSizeSelector from "../presentational-components/PageSizeSelector";
+import Pagination from "../presentational-components/Pagination";
+import EditableCell from "../presentational-components/EditableCell";
 import {TypeMap} from "../models/TypeMap";
 import {TableAction} from "../models/TableAction";
 
@@ -29,9 +29,11 @@ type Props = {
     /** This is a handling for when the Update and Delete validation fails. This will revert the new values into the
      * value assigned before we clicked the Update/Delete */
     hasError: boolean;
+
+    highlightRow: (rowData: any) => boolean;
 };
 
-const Table: React.FC<Props> = (props: Props) => {
+const ModifiableTable: React.FC<Props> = (props: Props) => {
 
     const {columnsConf, dataConf, typeMap} = props;
 
@@ -74,19 +76,21 @@ const Table: React.FC<Props> = (props: Props) => {
                             setTableAction(TableAction.CANCEL);
                         }}
                         onUpdate={(manipulatedData, rowNumber) => {
-                            setTableAction(TableAction.UPDATE);
                             props.onUpdate(manipulatedData, rowNumber, tableInstance);
+                            setTableAction(TableAction.UPDATE);
                         }}
                         onEdit={(rowNumber) => {
-                            setManipulatedData(tableInstance.rows[rowNumber].original)
-                            setOriginalData(tableInstance.rows[rowNumber].original);
+                            setManipulatedData(tableInstance.row.original)
+                            setOriginalData(tableInstance.row.original);
                             setCurrentEditingRowIndex(rowNumber);
                             setTableAction(TableAction.EDIT);
                         }}
                         onDelete={rowNumber => {
-                            setManipulatedData({});
-                            props.onDelete(tableInstance.rows[rowNumber].original);
-                            setTableAction(TableAction.DELETE);
+                            if (window.confirm('Are you sure that you want to delete this record?')) {
+                                setManipulatedData({});
+                                props.onDelete(tableInstance.row.original);
+                                setTableAction(TableAction.DELETE);
+                            }
                         }}/>
                 )
             },
@@ -100,24 +104,7 @@ const Table: React.FC<Props> = (props: Props) => {
         Cell: EditableCell
     }
 
-    const {
-
-        // Table Properties
-        getTableProps, getTableBodyProps, headerGroups, prepareRow,
-
-        // Page Navigation
-        page, canPreviousPage, canNextPage, pageCount, gotoPage, nextPage, previousPage, setPageSize,
-
-        // Filters
-        setFilter, setAllFilters,
-
-        // State
-        state: {
-            pageIndex,
-            pageSize,
-        },
-
-    } = useTable(
+    const table = useTable(
         {
 
             // Table Configurations
@@ -136,6 +123,25 @@ const Table: React.FC<Props> = (props: Props) => {
         // React table hooks
         useFilters, useSortBy, usePagination
     );
+
+    const {
+
+        // Table Properties
+        getTableProps, getTableBodyProps, headerGroups, prepareRow,
+
+        // Page Navigation
+        page, canPreviousPage, canNextPage, pageCount, gotoPage, nextPage, previousPage, setPageSize,
+
+        // Filters
+        setFilter, setAllFilters,
+
+        // State
+        state: {
+            pageIndex,
+            pageSize,
+        },
+
+    } = table;
 
     // The default view is 5 rows
     useEffect(() => setPageSize(5), [])
@@ -199,7 +205,7 @@ const Table: React.FC<Props> = (props: Props) => {
                 {page.map((row) => {
                     prepareRow(row)
                     return (
-                        <tr className={(row.original as any).isSocialDistancing === false ? 'has-background-danger-light' : ''} {...row.getRowProps()}>
+                        <tr className={props.highlightRow(row.original) ? 'has-background-danger-light' : ''} {...row.getRowProps()}>
                             {row.cells.map(cell => {
                                 return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
                             })}
@@ -218,4 +224,4 @@ const Table: React.FC<Props> = (props: Props) => {
 
 }
 
-export default Table;
+export default ModifiableTable;

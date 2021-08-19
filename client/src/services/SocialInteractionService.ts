@@ -2,19 +2,18 @@ import {SocialInteraction} from "../models/SocialInteraction";
 
 const SOCIAL_INTERACTION_URL = 'http://localhost:5000/api/social-interactions';
 
-// TODO : IMPROVE ERROR HANDLING FOR THE SERVICE CALLS
-export const getAllSocialInteractions = (): Promise<SocialInteraction[]> => {
+export const getAllSocialInteractions = async (): Promise<SocialInteraction[]> => {
 
     const requestOptions = {
         method: 'GET'
     }
 
-    return fetch(SOCIAL_INTERACTION_URL, requestOptions)
-        .then((response) => response.json())
-        .catch(error => console.error(error));
+    const response = await fetch(SOCIAL_INTERACTION_URL, requestOptions);
+    return await response.json();
+
 }
 
-export const addSocialInteraction = (socialInteraction: SocialInteraction) => {
+export const addSocialInteraction = async (socialInteraction: SocialInteraction) => {
 
     const requestOptions = {
         method: 'POST',
@@ -22,11 +21,12 @@ export const addSocialInteraction = (socialInteraction: SocialInteraction) => {
         body: JSON.stringify(socialInteraction)
     }
 
-    return fetch(SOCIAL_INTERACTION_URL, requestOptions)
-        .then((response) => response.json());
+    const response = await fetch(SOCIAL_INTERACTION_URL, requestOptions);
+    return await response.json();
+
 }
 
-export const updateSocialInteraction = (id: string, socialInteraction: SocialInteraction): Promise<any> => {
+export const updateSocialInteraction = async (id: string, socialInteraction: SocialInteraction): Promise<any> => {
 
     const requestOptions = {
         method: 'PUT',
@@ -34,20 +34,20 @@ export const updateSocialInteraction = (id: string, socialInteraction: SocialInt
         body: JSON.stringify(socialInteraction)
     }
 
-    return fetch(`${SOCIAL_INTERACTION_URL}/${id}`, requestOptions)
-        .then((response) => response.json())
-        .catch(error => console.error(error));
+    const response = await fetch(`${SOCIAL_INTERACTION_URL}/${id}`, requestOptions);
+    return await response.json();
+
 }
 
-export const deleteSocialInteraction = (id: string): Promise<any> => {
+export const deleteSocialInteraction = async (id: string): Promise<any> => {
 
     const requestOptions = {
         method: 'DELETE',
     }
 
-    return fetch(`${SOCIAL_INTERACTION_URL}/${id}`, requestOptions)
-        .then((response) => response.json())
-        .catch(error => console.error(error));
+    const response = await fetch(`${SOCIAL_INTERACTION_URL}/${id}`, requestOptions);
+    return await response.json();
+
 }
 
 

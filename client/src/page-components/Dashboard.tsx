@@ -3,14 +3,22 @@ import SocialInteractionForm from "../forms/SocialInteractionForm";
 import {getSocialInteractionsChartData} from "../filters/SocialInteractionsFilters";
 import {useDispatch, useSelector} from "react-redux";
 import useModal from "../hooks/useModal";
-import {StoreState} from "../redux/StoreState";
 import SimpleModal from "../presentational-components/SimpleModal";
 import Header from "../presentational-components/Header";
 import React, {useEffect} from "react";
 import TableDisplay from "../presentational-components/TableDisplay";
-import {addSocialInteraction, getAllSocialInteractions} from "../redux/actions/social-interactions/Actions";
+import {
+    addSocialInteraction,
+    deleteSocialInteraction,
+    getAllSocialInteractions
+} from "../redux/actions/SocialInteractionsActions";
 import {useHistory} from "react-router";
-import NotificationsList from "../presentational-components/NotificationsList";
+import NotificationsList from "../smart-components/NotificationsList";
+import VisitedPlaceForm from "../forms/VisitedPlaceForm";
+import {addVisitedPlace, deleteVisitedPlace, getAllVisitedPlaces} from "../redux/actions/VisitedPlacesActions";
+import {getVisitedPlacesChartData} from "../filters/VisitedPlacesFilters";
+import {StoreState} from "../redux/StoreState";
+import {Store} from "../redux/Store";
 
 const Dashboard = () => {
 
@@ -19,12 +27,18 @@ const Dashboard = () => {
     const history = useHistory();
 
     useEffect(() => {
-        getAllSocialInteractions(dispatch)
+        getAllSocialInteractions(dispatch);
+        getAllVisitedPlaces(dispatch);
     }, [])
 
     const socialInteractionsChartData = useSelector<StoreState>(
         (state) => getSocialInteractionsChartData(state.socialInteractions)
     ) as { x: number, y: number }[];
+
+    const visitedPlacesChartData = useSelector<StoreState>(
+        (state) => getVisitedPlacesChartData(state.visitedPlaces)
+    ) as { x: number, y: number }[];
+
 
     // ------------- Modal functionalities
     const socialInteractionModal = useModal();
@@ -38,16 +52,25 @@ const Dashboard = () => {
                 title='COVID Exposure Tracker Tool'
                 tabInformation={[
                     {
-                        title: 'Add Social Interaction',
-                        onTabClick: socialInteractionModal.showModal
-                    },
-                    {
                         title: 'Add Place Exposure',
                         onTabClick: placeExposureModal.showModal
                     },
                     {
+                        title: 'Add Social Interaction',
+                        onTabClick: socialInteractionModal.showModal
+                    },
+                    {
                         title: 'Reset Data',
-                        onTabClick: () => console.log('Reset Data')
+                        onTabClick: () => {
+                            if (window.confirm('Are you sure that you want to delete?')) {
+                                Store.getState().socialInteractions.forEach(data => {
+                                    deleteSocialInteraction(dispatch, data._id);
+                                });
+                                Store.getState().visitedPlaces.forEach(data => {
+                                    deleteVisitedPlace(dispatch, data._id);
+                                })
+                            }
+                        }
                     },
                 ]}
             />
@@ -58,23 +81,18 @@ const Dashboard = () => {
             {/*------------- TABLES -------------*/}
             <div className="columns is-gapless">
                 <div className="column">
-                    {/*<TableDisplay*/}
-                    {/*    title={"Recent Visited Places"}*/}
-                    {/*    onViewAll={sampleTabClick}*/}
-                    {/*    chartData={[*/}
-                    {/*        {x: 1, y: 5},*/}
-                    {/*        {x: 2, y: 15},*/}
-                    {/*        {x: 3, y: 25},*/}
-                    {/*        {x: 4, y: 35},*/}
-                    {/*    ]}*/}
-                    {/*    chartTickValues={[1,2,3,4]}*/}
-                    {/*    chartLabelX={["Jan 1", "Jan 2", "Jan 3", "Jan 4"]}*/}
-                    {/*    chartLabelYFunction={(x) => (`$${x / 100}k`)}*/}
-                    {/*/>*/}
+                    <TableDisplay
+                        title={"Recent Visited Places"}
+                        onViewAll={() => history.push('/visited-places')}
+                        chartData={visitedPlacesChartData}
+                        chartTickValues={[1, 2, 3, 4, 5, 6, 7]}
+                        chartLabelX={getDayAndMonthNDaysAgo(7, new Date())}
+                        chartLabelY={'Number of Visited Places'}
+                    />
                 </div>
                 <div className="column">
                     <TableDisplay
-                        title={"Recent Social Places"}
+                        title={"Recent Social Interactions"}
                         onViewAll={() => history.push('/social-interactions')}
                         chartData={socialInteractionsChartData}
                         chartTickValues={[1, 2, 3, 4, 5, 6, 7]}
@@ -91,20 +109,19 @@ const Dashboard = () => {
                 handleClose={socialInteractionModal.hideModal}>
                 <SocialInteractionForm
                     handleClose={socialInteractionModal.hideModal}
-                    handleSubmit={(socialInteraction) => addSocialInteraction(dispatch, socialInteraction)}
+                    handleSubmit={socialInteraction => addSocialInteraction(dispatch, socialInteraction)}
                 />
             </SimpleModal>
 
-            {/*<SimpleModal*/}
-            {/*    title="Add Visited Place"*/}
-            {/*    show={placeExposureModal.isShown}*/}
-            {/*    handleClose={placeExposureModal.hideModal}>*/}
-            {/*    <PlaceExposureForm*/}
-            {/*        handleSubmit={() => {*/}
-            {/*            console.log('Form Submitted');*/}
-            {/*        }}*/}
-            {/*        handleClose={placeExposureModal.hideModal}/>*/}
-            {/*</SimpleModal>*/}
+            <SimpleModal
+                title="Add Visited Place"
+                show={placeExposureModal.isShown}
+                handleClose={placeExposureModal.hideModal}>
+                <VisitedPlaceForm
+                    handleClose={placeExposureModal.hideModal}
+                    handleSubmit={visitedPlace => addVisitedPlace(dispatch, visitedPlace)}
+                />
+            </SimpleModal>
 
         </div>
     );
