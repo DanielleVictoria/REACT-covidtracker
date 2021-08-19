@@ -19,7 +19,6 @@ const EditableCell = (obj: TableInstance) => {
         setTableAction,
     } = obj;
 
-    // @ts-ignore
     const type = obj.typeMap[id].type;
 
     const [value, setValue] = React.useState(initialValue); // Value per cell
