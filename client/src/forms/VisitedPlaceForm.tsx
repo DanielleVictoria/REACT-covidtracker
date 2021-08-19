@@ -61,7 +61,7 @@ const VisitedPlaceForm: React.FC<Props> = (props: Props) => {
                         onValueChange={(str) => {
                             setFormData({...formData, place: str})
                         }}
-                        visibilityLength={2}
+                        visibilityLength={1}
                     />
                 </div>
                 {showValidationMessage('place')}

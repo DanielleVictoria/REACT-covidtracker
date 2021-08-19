@@ -61,7 +61,7 @@ const SocialInteractionForm: React.FC<Props> = (props: Props) => {
                         onValueChange={(str) => {
                             setFormData({...formData, name: str})
                         }}
-                        visibilityLength={2}
+                        visibilityLength={1}
                     />
                 </div>
                 {showValidationMessage('name')}

@@ -86,9 +86,11 @@ const ModifiableTable: React.FC<Props> = (props: Props) => {
                             setTableAction(TableAction.EDIT);
                         }}
                         onDelete={rowNumber => {
-                            setManipulatedData({});
-                            props.onDelete(tableInstance.row.original);
-                            setTableAction(TableAction.DELETE);
+                            if (window.confirm('Are you sure that you want to delete this record?')) {
+                                setManipulatedData({});
+                                props.onDelete(tableInstance.row.original);
+                                setTableAction(TableAction.DELETE);
+                            }
                         }}/>
                 )
             },

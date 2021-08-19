@@ -6,14 +6,14 @@ import {Switch, Route} from "react-router";
 import {BrowserRouter} from "react-router-dom";
 import SocialInteractionsMasterList from "./page-components/SocialInteractionsMasterList";
 import { Provider as ReduxProvider } from "react-redux";
-import configureState from "./redux/configureStore";
+import {Store} from "./redux/Store";
 import VisitedPlacesMasterList from "./page-components/VisitedPlacesMasterList";
 
 function App() {
 
     return (
         <div className="App">
-            <ReduxProvider store={configureState()}>
+            <ReduxProvider store={Store}>
                 <BrowserRouter>
                     <Switch>
                         <Route exact path="/" component={Dashboard}/>

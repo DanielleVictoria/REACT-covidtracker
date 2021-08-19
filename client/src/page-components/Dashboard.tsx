@@ -7,16 +7,19 @@ import SimpleModal from "../presentational-components/SimpleModal";
 import Header from "../presentational-components/Header";
 import React, {useEffect} from "react";
 import TableDisplay from "../presentational-components/TableDisplay";
-import {addSocialInteraction, getAllSocialInteractions} from "../redux/actions/SocialInteractionsActions";
+import {
+    addSocialInteraction,
+    deleteSocialInteraction,
+    getAllSocialInteractions
+} from "../redux/actions/SocialInteractionsActions";
 import {useHistory} from "react-router";
 import NotificationsList from "../smart-components/NotificationsList";
 import VisitedPlaceForm from "../forms/VisitedPlaceForm";
-import {addVisitedPlace, getAllVisitedPlaces} from "../redux/actions/VisitedPlacesActions";
+import {addVisitedPlace, deleteVisitedPlace, getAllVisitedPlaces} from "../redux/actions/VisitedPlacesActions";
 import {getVisitedPlacesChartData} from "../filters/VisitedPlacesFilters";
 import {StoreState} from "../redux/StoreState";
+import {Store} from "../redux/Store";
 
-// TODO : Implement ResetData
-// TODO : Apply confirmation when deleting
 const Dashboard = () => {
 
     // ------------- Variable Initializations
@@ -58,7 +61,16 @@ const Dashboard = () => {
                     },
                     {
                         title: 'Reset Data',
-                        onTabClick: () => console.log('Reset Data')
+                        onTabClick: () => {
+                            if (window.confirm('Are you sure that you want to delete?')) {
+                                Store.getState().socialInteractions.forEach(data => {
+                                    deleteSocialInteraction(dispatch, data._id);
+                                });
+                                Store.getState().visitedPlaces.forEach(data => {
+                                    deleteVisitedPlace(dispatch, data._id);
+                                })
+                            }
+                        }
                     },
                 ]}
             />
